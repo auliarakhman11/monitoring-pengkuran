@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BerkasController;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\PetugasController;
+
+use App\Http\Controllers\HomeController;
+
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -25,29 +25,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
     //home
-    Route::get('berkas', [BerkasController::class, 'index'])->name('berkas');
-    Route::get('getBerkas', [BerkasController::class, 'getBerkas'])->name('getBerkas');
-    Route::post('addBerkas', [BerkasController::class, 'addBerkas'])->name('addBerkas');
-    Route::post('editBerkas', [BerkasController::class, 'editBerkas'])->name('editBerkas');
-    Route::get('geteditBerkas/{berkas_id}', [BerkasController::class, 'geteditBerkas'])->name('geteditBerkas');
-    Route::get('deleteBerkas/{berkas_id}', [BerkasController::class, 'deleteBerkas'])->name('deleteBerkas');
-    Route::post('lanjutBerkas', [BerkasController::class, 'lanjutBerkas'])->name('lanjutBerkas');
-    Route::get('getDataCatatan/{berkas_id}', [BerkasController::class, 'getDataCatatan'])->name('getDataCatatan');
-    Route::post('addCatatan', [BerkasController::class, 'addCatatan'])->name('addCatatan');
-    Route::get('hapusCatatan/{catatan_id}', [BerkasController::class, 'hapusCatatan'])->name('hapusCatatan');
-    Route::get('getKembaliBerkas/{berkas_id}/{proses_id}', [BerkasController::class, 'getKembaliBerkas'])->name('getKembaliBerkas');
-    Route::get('kembaliBerkas/{berkas_id}/{proses_id}', [BerkasController::class, 'kembaliBerkas'])->name('kembaliBerkas');
-    Route::get('historyBerkas/{berkas_id}', [BerkasController::class, 'historyBerkas'])->name('historyBerkas');
-    Route::get('berkasSelesai', [BerkasController::class, 'berkasSelesai'])->name('berkasSelesai');
-    Route::get('getBerkasSelesai', [BerkasController::class, 'getBerkasSelesai'])->name('getBerkasSelesai');
-    //endhome
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    //endHome
 
-    //laporan
-    Route::get('/', [LaporanController::class, 'index'])->name('laporan');
-    //endLaporan
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     //user
     Route::get('user', [UserController::class, 'index'])->name('user');
@@ -59,13 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::post('edit-user', [UserController::class, 'editUser'])->name('editUser');
     //enduser
 
-    //petugas
-    Route::get('petugas', [PetugasController::class, 'index'])->name('petugas');
-    Route::get('getDataPetugas', [PetugasController::class, 'getDataPetugas'])->name('getDataPetugas');
-    Route::post('addPetugas', [PetugasController::class, 'addPetugas'])->name('addPetugas');
-    Route::get('getPetugas/{id}', [PetugasController::class, 'getPetugas'])->name('getPetugas');
-    Route::post('editPetugas', [PetugasController::class, 'editPetugas'])->name('editPetugas');
-    //endperugas
 
 
 

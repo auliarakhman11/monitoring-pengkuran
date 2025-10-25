@@ -1,132 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <title>SIMONTA | Login</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="{{ asset('img') }}/Logo_BPN-KemenATR.png" />
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/css/util.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('auth') }}/css/main.css">
-    <!--===============================================================================================-->
+    <title>Kebab Keep | Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Iconic Bootstrap 4.5.0 Admin Template">
+    <meta name="author" content="WrapTheme, design by: ThemeMakker.com">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/vendor/font-awesome/css/font-awesome.min.css">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/main.css">
+
 </head>
 
-<body>
-
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <div class="login100-pic js-tilt" data-tilt>
-                    <img src="{{ asset('img') }}/Logo_BPN-KemenATR.png" alt="IMG">
-                </div>
-
-                <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <span class="login100-form-title">
-                        SIMONTA <p>(Sistem Monitoring Tunggakan)</p>
-                    </span>
-
-
-                    @error('username')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
+<body data-theme="light" class="font-nunito">
+    <!-- WRAPPER -->
+    <div id="wrapper" class="theme-cyan">
+        <div class="vertical-align-wrap">
+            <div class="vertical-align-middle auth-main">
+                <div class="auth-box">
+                    <div class="top">
+                        <img src="{{ asset('img') }}/kebabyasmin.JPEG" alt="Iconic">
+                    </div>
+                    <div class="card">
+                        <div class="header">
+                            <p class="lead">Login dengan akun mu</p>
                         </div>
-                    @enderror
-
-                    <?php if(session('success')): ?>
-                    <div class="alert alert-success" role="alert">
-                        {{ session('success') }}
+                        <div class="body">
+                            <form class="form-auth-small" action="{{ route('login') }}" method="post">
+                                <div class="form-group">
+                                    <label for="username" class="control-label sr-only">Username</label>
+                                    <input type="text" class="form-control" id="username"
+                                        placeholder="Masukan Username" value="{{ old('username') }}" required>
+                                    @error('username')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="control-label sr-only">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                </div>
+                                {{-- <div class="form-group clearfix">
+                                    <label class="fancy-checkbox element-left">
+                                        <input type="checkbox">
+                                        <span>Remember me</span>
+                                    </label>
+                                </div> --}}
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
+                                {{-- <div class="bottom">
+                                    <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a
+                                            href="page-forgot-password.html">Forgot password?</a></span>
+                                    <span>Don't have an account? <a href="page-register.html">Register</a></span>
+                                </div> --}}
+                            </form>
+                        </div>
                     </div>
-                    <?php endif; ?>
-                    <div class="wrap-input100 validate-input" data-validate = "Username harus diisi">
-                        <input class="input100" type="text" name="username" placeholder="Username"
-                            value="{{ old('username') }}" required>
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                        </span>
-                    </div>
-
-                    <div class="wrap-input100 validate-input" data-validate = "Password harus diisi">
-                        <input class="input100" type="password" name="password" placeholder="Password">
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                        </span>
-                    </div>
-
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn" id="btn_login">
-                            Login
-                        </button>
-                    </div>
-
-                    {{-- <div class="text-center p-t-12">
-                        <span class="txt1">
-                            Forgot
-                        </span>
-                        <a class="txt2" href="#">
-                            Username / Password?
-                        </a>
-                    </div> --}}
-
-                    {{-- <div class="text-center p-t-136">
-                        <a class="txt2" href="#">
-                            Create your Account
-                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-                        </a>
-                    </div> --}}
-                </form>
+                </div>
             </div>
         </div>
     </div>
-
-
-
-
-    <!--===============================================================================================-->
-    <script src="{{ asset('auth') }}/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="{{ asset('auth') }}/vendor/bootstrap/js/popper.js"></script>
-    <script src="{{ asset('auth') }}/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="{{ asset('auth') }}/vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="{{ asset('auth') }}/vendor/tilt/tilt.jquery.min.js"></script>
-    <script>
-        $('.js-tilt').tilt({
-            scale: 1.1
-        })
-    </script>
-    <!--===============================================================================================-->
-    <script src="{{ asset('auth') }}/js/main.js"></script>
-
-    <script>
-        $(document).ready(function() {
-
-
-            $(document).on('submit', '#form_login', function(event) {
-                $('#btn_login').attr('disabled', true);
-                $('#btn_login').html('Loading..');
-
-
-            });
-
-        });
-    </script>
-
+    <!-- END WRAPPER -->
 </body>
 
 </html>

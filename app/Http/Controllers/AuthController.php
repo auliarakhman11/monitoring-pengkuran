@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($attributes, true)) {
-            return redirect(RouteServiceProvider::HOME);
+            return redirect(route('home'));
         }
 
         // $user = User::where('username', $request->username)->first();
