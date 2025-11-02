@@ -2,7 +2,7 @@
     <button type="button" class="btn-toggle-offcanvas"><i class="fa fa-arrow-left"></i></button>
     <div class="sidebar-scroll">
         <div class="user-account">
-            <img src="{{ asset('assets') }}/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+            <img src="{{ asset('img') }}/kebabyasmin.jpeg" class="rounded-circle user-photo" alt="User Profile Picture">
             <div class="dropdown">
                 <span>Welcome,</span>
                 <strong>{{ session()->get('name') ? session()->get('name') : '' }}</strong>
@@ -33,15 +33,16 @@
             </ul> --}}
         </div>
         <!-- Nav tabs -->
-        {{-- <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#menu">Menu</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Chat"><i class="icon-book-open"></i></a>
+            {{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Chat"><i class="icon-book-open"></i></a>
+            </li> --}}
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#setting"><i class="icon-settings"></i>
+                    Setting</a>
             </li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#setting"><i class="icon-settings"></i></a>
-            </li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#question"><i
-                        class="icon-question"></i></a></li>
-        </ul> --}}
+            {{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#question"><i
+                        class="icon-question"></i></a></li> --}}
+        </ul>
 
         <!-- Tab panes -->
         <div class="tab-content padding-0">
@@ -63,7 +64,8 @@
                             </ul>
                         </li>
 
-                        <li class="{{ Request::is(['outlet', 'akun-pengeluaran', 'bahan-satuan']) ? 'active' : '' }}">
+                        <li
+                            class="{{ Request::is(['outlet', 'akun-pengeluaran', 'bahan-satuan', 'barangKebutuhan', 'pembayaran', 'karyawan', 'products']) ? 'active' : '' }}">
                             <a href="#database" class="has-arrow"><i class="fa fa-table"></i><span>Database</span></a>
                             <ul>
                                 <li class="{{ Request::is('outlet') ? 'active' : '' }}"><a
@@ -72,9 +74,18 @@
                                         href="{{ route('akunPengeluaran') }}">Akun</a></li>
                                 <li class="{{ Request::is('bahan-satuan') ? 'active' : '' }}"><a
                                         href="{{ route('bahanSatuan') }}">Bahan & Satuan</a></li>
+                                <li class="{{ Request::is('barangKebutuhan') ? 'active' : '' }}"><a
+                                        href="{{ route('barangKebutuhan') }}">Barang Kebutuhan</a></li>
+                                <li class="{{ Request::is('pembayaran') ? 'active' : '' }}"><a
+                                        href="{{ route('pembayaran') }}">Pemabayaran</a></li>
+                                <li class="{{ Request::is('karyawan') ? 'active' : '' }}"><a
+                                        href="{{ route('karyawan') }}">Karyawan</a></li>
+                                <li class="{{ Request::is('products') ? 'active' : '' }}"><a
+                                        href="{{ route('products') }}">Produk</a></li>
 
                             </ul>
                         </li>
+
                         {{-- <li>
                             <a href="#App" class="has-arrow"><i class="fa fa-th-large"></i><span>Ready
                                     App</span></a>
@@ -300,7 +311,7 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
             <div class="tab-pane" id="setting">
                 <h6>Choose Skin</h6>
                 <ul class="choose-skin list-unstyled">
@@ -379,7 +390,7 @@
                     </li>
                 </ul>
 
-                <hr>
+                {{-- <hr>
                 <h6>General Settings</h6>
                 <ul class="setting-list list-unstyled">
                     <li>
@@ -400,13 +411,13 @@
                             <span>Location Permission</span>
                         </label>
                     </li>
-                </ul>
+                </ul> --}}
 
-                <a href="#" target="_blank" class="btn btn-block btn-primary">Buy this item</a>
+                {{-- <a href="#" target="_blank" class="btn btn-block btn-primary">Buy this item</a>
                 <a href="https://themeforest.net/user/wrraptheme/portfolio" target="_blank"
-                    class="btn btn-block btn-secondary">View portfolio</a>
+                    class="btn btn-block btn-secondary">View portfolio</a> --}}
             </div>
-            <div class="tab-pane" id="question">
+            {{-- <div class="tab-pane" id="question">
                 <form>
                     <div class="input-group">
                         <div class="input-group-prepend">

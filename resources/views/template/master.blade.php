@@ -24,15 +24,20 @@
 
     <!-- MAIN Project CSS file -->
     <link rel="stylesheet" href="{{ asset('assets') }}/css/main.css">
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
 </head>
 
-<body data-theme="light" class="font-nunito">
+<body data-theme="light" class="font-nunito right_icon_toggle">
     <div id="wrapper" class="theme-cyan">
 
         <!-- Page Loader -->
         <div class="page-loader-wrapper">
             <div class="loader">
-                <div class="m-t-30"><img src="{{ asset('assets') }}/images/logo-icon.svg" width="48" height="48"
+                <div class="m-t-30"><img src="{{ asset('img') }}/kebabyasmin.jpeg" width="48" height="48"
                         alt="Iconic">
                 </div>
                 <p>Please wait...</p>
@@ -82,7 +87,20 @@
 
     <script src="{{ asset('assets') }}/html-versiokn/js/pages/tables/jquery-datatable.js"></script>
 
+    {{-- select2 --}}
+    <script src="{{ asset('assets') }}/select2/js/select2.full.min.js"></script>
+
     @yield('script')
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.select').select2();
+
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
+    </script>
 
 </body>
 

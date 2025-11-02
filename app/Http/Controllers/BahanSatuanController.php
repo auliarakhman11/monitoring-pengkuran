@@ -13,7 +13,7 @@ class BahanSatuanController extends Controller
     {
         $data = [
             'title' => 'Daftar Bahan',
-            'bahan' => Bahan::where('aktif', 'Y')->orderBy('possition', 'ASC')->with(['satuan', 'jenisBahan'])->get(),
+            'bahan' => Bahan::where('aktif', 'Y')->where('jenis', 1)->orderBy('possition', 'ASC')->with(['satuan', 'jenisBahan'])->get(),
             'satuan' => Satuan::all(),
             'jenis_bahan' => JenisBahan::all(),
         ];
@@ -38,7 +38,7 @@ class BahanSatuanController extends Controller
     public function addBahan(Request $request)
     {
 
-        $cek = Bahan::where('bahan', $request->bahan)->where('aktif', 'Y')->first();
+        $cek = Bahan::where('bahan', $request->bahan)->where('jenis', 1)->where('aktif', 'Y')->first();
 
         if ($cek) {
             return redirect(route('bahanSatuan'))->with('error', 'Bahan sudah ada');
@@ -48,6 +48,7 @@ class BahanSatuanController extends Controller
                 'bahan' => $request->bahan,
                 'jenis_bahan_id' => $request->jenis_bahan_id,
                 'possition' => 0,
+                'jenis' => 1
             ];
             $bahan = Bahan::create($data);
 
@@ -85,6 +86,50 @@ class BahanSatuanController extends Controller
         ];
 
         Bahan::where('id', $request->id)->update($data);
-        return redirect(route('bahanSatuan'))->with('success', 'Data berhasil dihapus');
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function barangKebutuhan()
+    {
+        $data = [
+            'title' => 'Daftar Barang Kebutuhan',
+            'bahan' => Bahan::where('aktif', 'Y')->where('jenis', 2)->orderBy('possition', 'ASC')->with(['satuan'])->get(),
+            'satuan' => Satuan::all(),
+        ];
+        return view('bahan.barang_kebutuhan', $data);
+    }
+
+    public function addBarangKebutuhan(Request $request)
+    {
+
+        $cek = Bahan::where('bahan', $request->bahan)->where('jenis', 2)->where('aktif', 'Y')->first();
+
+        if ($cek) {
+            return redirect(route('bahanSatuan'))->with('error', 'Bahan sudah ada');
+        } else {
+            $data = [
+                'satuan_id' => $request->satuan_id,
+                'bahan' => $request->bahan,
+                'jenis_bahan_id' => 2,
+                'possition' => 0,
+                'jenis' => 2
+            ];
+            $bahan = Bahan::create($data);
+
+
+            return redirect(route('barangKebutuhan'))->with('success', 'Data berhasil dibuat');
+        }
+    }
+
+    public function editBarangKebutuhan(Request $request)
+    {
+        $data = [
+            'satuan_id' => $request->satuan_id,
+            'bahan' => $request->bahan,
+        ];
+        Bahan::where('id', $request->id)->update($data);
+
+
+        return redirect(route('barangKebutuhan'))->with('success', 'Data berhasil diubah');
     }
 }

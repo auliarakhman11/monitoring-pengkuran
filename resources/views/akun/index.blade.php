@@ -37,7 +37,7 @@
             <div class="row clearfix row-deck">
 
                 <div class="table-responsive">
-                    <table class="table table-hover js-basic-example dataTable table-custom" id="table">
+                    <table class="table js-basic-example dataTable table-custom" id="table">
                         <thead>
                             <tr>
                                 <th>#</th>

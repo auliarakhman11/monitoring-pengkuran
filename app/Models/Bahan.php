@@ -11,7 +11,7 @@ class Bahan extends Model
 
     protected $table = 'bahan';
 
-    protected $fillable = ['bahan', 'satuan_id', 'aktif', 'jenis_bahan_id', 'possition'];
+    protected $fillable = ['bahan', 'satuan_id', 'jenis', 'aktif', 'jenis_bahan_id', 'possition'];
 
     public function satuan()
     {

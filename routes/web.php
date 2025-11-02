@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BahanSatuanController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -65,6 +67,47 @@ Route::middleware('auth')->group(function () {
     Route::patch('bahan', [BahanSatuanController::class, 'editBahan'])->name('editBahan');
     Route::patch('dropDataBahan', [BahanSatuanController::class, 'dropDataBahan'])->name('dropDataBahan');
     //endbahan
+
+    //barang kebutuhan
+    Route::get('barangKebutuhan', [BahanSatuanController::class, 'barangKebutuhan'])->name('barangKebutuhan');
+    Route::post('addBarangKebutuhan', [BahanSatuanController::class, 'addBarangKebutuhan'])->name('addBarangKebutuhan');
+    Route::patch('editBarangKebutuhan', [BahanSatuanController::class, 'editBarangKebutuhan'])->name('editBarangKebutuhan');
+    //end barang kebutuhan
+
+    //pembayaran
+    Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
+    Route::post('/pembayaran', [PembayaranController::class, 'addPembayaran'])->name('addPembayaran');
+    Route::patch('/pembayaran', [PembayaranController::class, 'editPembayaran'])->name('editPembayaran');
+    //end pembayaran
+
+    //karyawan
+    Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan');
+    Route::post('/karyawan', [KaryawanController::class, 'addKaryawan'])->name('addKaryawan');
+    Route::patch('/karyawan', [KaryawanController::class, 'editKaryawan'])->name('editKaryawan');
+    Route::post('/delete-karyawan', [KaryawanController::class, 'dropKaryawan'])->name('dropKaryawan');
+    Route::post('sort-karyawan', [KaryawanController::class, 'sortKaryawan'])->name('sortKaryawan');
+    //end karyawan
+
+    //produk
+    Route::get('/products', [ProductsController::class, 'index'])->name('products');
+    Route::post('/products', [ProductsController::class, 'addProduct'])->name('addProduct');
+    Route::patch('/produk', [ProductsController::class, 'editProduk'])->name('editProduk');
+
+    Route::post('/add-resep', [ProductsController::class, 'addResep'])->name('addResep');
+
+    Route::post('/drop-resep', [ProductsController::class, 'dropResep'])->name('dropResep');
+
+    Route::post('/sort-produk', [ProductsController::class, 'sortProduk'])->name('sortProduk');
+
+    Route::get('/delete-produk/{id}', [ProductsController::class, 'deleteProduk'])->name('deleteProduk');
+
+    Route::get('getHargaResep/{produk_id}', [ProductsController::class, 'getHargaResep'])->name('getHargaResep');
+    //end produk
+
+    //kategori
+    Route::post('tambah-kategori', [ProductsController::class, 'tambahKategori'])->name('tambahKategori');
+    Route::post('edit-kategori', [ProductsController::class, 'editKategori'])->name('editKategori');
+    //end kategori
 
 
 
