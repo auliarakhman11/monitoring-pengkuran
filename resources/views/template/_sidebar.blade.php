@@ -2,7 +2,7 @@
     <button type="button" class="btn-toggle-offcanvas"><i class="fa fa-arrow-left"></i></button>
     <div class="sidebar-scroll">
         <div class="user-account">
-            <img src="{{ asset('img') }}/kebabyasmin.jpeg" class="rounded-circle user-photo" alt="User Profile Picture">
+            <img src="{{ asset('img') }}/Logo_BPN-KemenATR.png" class="rounded-circle user-photo" alt="User Profile Picture">
             <div class="dropdown">
                 <span>Welcome,</span>
                 <strong>{{ session()->get('name') ? session()->get('name') : '' }}</strong>
@@ -55,41 +55,9 @@
                             <ul>
                                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a
                                         href="{{ route('home') }}">Home</a></li>
-                                <li><a href="h-menu.html">Analytical H-Menu</a></li>
-                                <li><a href="index9.html">IoT Dashboard</a></li>
-                                <li><a href="index2.html">Demographic</a></li>
-                                <li><a href="index6.html">Project Board</a></li>
-                                <li><a href="index7.html">Crypto Dashboard</a></li>
-                                <li><a href="index8.html">eCommerce</a></li>
                             </ul>
                         </li>
 
-                        <li
-                            class="{{ Request::is(['outlet', 'akun-pengeluaran', 'bahan-satuan', 'barangKebutuhan', 'pembayaran', 'karyawan', 'products', 'user-kasir', 'varian']) ? 'active' : '' }}">
-                            <a href="#database" class="has-arrow"><i class="fa fa-table"></i><span>Database</span></a>
-                            <ul>
-                                <li class="{{ Request::is('outlet') ? 'active' : '' }}"><a
-                                        href="{{ route('outlet') }}">Outlet</a></li>
-                                <li class="{{ Request::is('akun-pengeluaran') ? 'active' : '' }}"><a
-                                        href="{{ route('akunPengeluaran') }}">Akun</a></li>
-                                <li class="{{ Request::is('bahan-satuan') ? 'active' : '' }}"><a
-                                        href="{{ route('bahanSatuan') }}">Bahan & Satuan</a></li>
-                                <li class="{{ Request::is('barangKebutuhan') ? 'active' : '' }}"><a
-                                        href="{{ route('barangKebutuhan') }}">Barang Kebutuhan</a></li>
-                                <li class="{{ Request::is('pembayaran') ? 'active' : '' }}"><a
-                                        href="{{ route('pembayaran') }}">Pemabayaran</a></li>
-                                <li class="{{ Request::is('karyawan') ? 'active' : '' }}"><a
-                                        href="{{ route('karyawan') }}">Karyawan</a></li>
-                                <li class="{{ Request::is('products') ? 'active' : '' }}"><a
-                                        href="{{ route('products') }}">Produk</a></li>
-
-                                <li class="{{ Request::is('user-kasir') ? 'active' : '' }}"><a
-                                        href="{{ route('userKasir') }}">User Kasir</a></li>
-                                <li class="{{ Request::is('varian') ? 'active' : '' }}"><a
-                                        href="{{ route('varian') }}">Varian</a></li>
-
-                            </ul>
-                        </li>
 
                         {{-- <li>
                             <a href="#App" class="has-arrow"><i class="fa fa-th-large"></i><span>Ready

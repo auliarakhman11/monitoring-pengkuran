@@ -3,12 +3,12 @@
 
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title }} | Kebab Keep</title>
+    <title>{{ $title }} | KantahKabBanjar</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Iconic Bootstrap 4.5.0 Admin Template">
     <meta name="author" content="WrapTheme, design by: ThemeMakker.com">
-    <link rel="icon" type="image/png" href="{{ asset('img') }}/kebabyasmin.jpeg" />
+    <link rel="icon" type="image/png" href="{{ asset('img') }}/Logo_BPN-KemenATR.png" />
 
     <!-- VENDOR CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/bootstrap/css/bootstrap.min.css">
@@ -37,7 +37,7 @@
         <!-- Page Loader -->
         <div class="page-loader-wrapper">
             <div class="loader">
-                <div class="m-t-30"><img src="{{ asset('img') }}/kebabyasmin.jpeg" width="48" height="48"
+                <div class="m-t-30"><img src="{{ asset('img') }}/Logo_BPN-KemenATR.png" width="48" height="48"
                         alt="Iconic">
                 </div>
                 <p>Please wait...</p>

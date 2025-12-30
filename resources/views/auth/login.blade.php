@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>Kebab Keep | Login</title>
+    <title>Login | KantahKabBanjar</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Iconic Bootstrap 4.5.0 Admin Template">
     <meta name="author" content="WrapTheme, design by: ThemeMakker.com">
 
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" href="{{ asset('img') }}/Logo_BPN-KemenATR.png" />
     <!-- VENDOR CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/font-awesome/css/font-awesome.min.css">
@@ -25,7 +25,7 @@
             <div class="vertical-align-middle auth-main">
                 <div class="auth-box">
                     <div class="top">
-                        <img src="{{ asset('img') }}/kebabyasmin.JPEG" alt="Iconic">
+                        <img src="{{ asset('img') }}/Logo_BPN-KemenATR.png" alt="Iconic">
                     </div>
                     <div class="card">
                         <div class="header">
