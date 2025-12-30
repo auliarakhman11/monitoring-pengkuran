@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,21 +14,9 @@ class UserController extends Controller
     {
         return view('user.index', [
             'title' => 'User',
+            'user' => User::with('role')->get(),
+            'role' => Role::all(),
         ]);
-    }
-
-    public function getDataUser()
-    {
-        $dt_user = User::all();
-        return datatables()->of($dt_user)
-            ->addColumn('action', function ($data) {
-                $button = '<a href="javascript:void(0)"  data-id="' . $data->id . '" class="edit_user btn btn-info btn-xs edit-post" data-toggle="modal" data-target="#modal_edit_user" ><i class="fas fa-edit"></i> Edit</a>';
-                $button .= '&nbsp;&nbsp;';
-                return $button;
-            })
-            ->rawColumns(['action'])
-            ->addIndexColumn()
-            ->make(true);
     }
 
     public function addUser()
@@ -64,9 +53,10 @@ class UserController extends Controller
             'username' => request('username'),
             'password' => bcrypt(request('password')),
             'role_id' => request('role_id'),
+            'aktif' => 1
         ]);
 
-        return response()->json(['success' => 'Data berhasil di input']);
+        return redirect()->back()->with('success', 'Data user berhasil dibuat');
     }
 
     public function gantiPassword()
@@ -101,18 +91,14 @@ class UserController extends Controller
         return redirect(route('gantiPassword'))->with('success', 'Password berhasil diganti');
     }
 
-    public function getUser($id)
-    {
-        $data  = User::where('id', $id)->first();
-        return response()->json($data);
-    }
 
     public function editUser(Request $request)
     {
         $edit = User::where('id', $request->id)->update([
             'name' => $request->name,
             'role_id' => $request->role_id,
+            'aktif' => $request->aktif,
         ]);
-        return response()->json($edit);
+        return redirect()->back()->with('success', 'Data user berhasil diubah');
     }
 }

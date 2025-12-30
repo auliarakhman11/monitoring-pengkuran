@@ -50,11 +50,29 @@
                 <nav id="left-sidebar-nav" class="sidebar-nav">
                     <ul id="main-menu" class="metismenu li_animation_delay">
                         <li class="{{ Request::is(['/']) ? 'active' : '' }}">
-                            <a href="#Dashboard" class="has-arrow"><i
+                            <a href="javascript:void(0)" class="has-arrow"><i
                                     class="fa fa-dashboard"></i><span>Dashboard</span></a>
                             <ul>
                                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a
                                         href="{{ route('home') }}">Home</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ Request::is(['loket']) ? 'active' : '' }}">
+                            <a href="javascript:void(0)" class="has-arrow"><i
+                                    class="fa fa-address-card"></i><span>Loket</span></a>
+                            <ul>
+                                <li class="{{ Request::is('loket') ? 'active' : '' }}"><a
+                                        href="{{ route('loket') }}">Input Berkas</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ Request::is(['user']) ? 'active' : '' }}">
+                            <a href="javascript:void(0)" class="has-arrow"><i
+                                    class="fa fa-users"></i><span>Users</span></a>
+                            <ul>
+                                <li class="{{ Request::is('user') ? 'active' : '' }}"><a
+                                        href="{{ route('user') }}">Manajemen User</a></li>
                             </ul>
                         </li>
 

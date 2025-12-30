@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BerkasController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,16 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     //endHome
 
+    //loket
+    Route::get('loket',[BerkasController::class,'loket'])->name('loket');
+    //endloket
+
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     //user
     Route::get('user', [UserController::class, 'index'])->name('user');
-    Route::get('get-data-user', [UserController::class, 'getDataUser'])->name('getDataUser');
     Route::post('user', [UserController::class, 'addUser'])->name('addUser');
-
-    Route::get('get-user/{id}', [UserController::class, 'getUser'])->name('getUser');
-
-    Route::post('edit-user', [UserController::class, 'editUser'])->name('editUser');
+    Route::patch('edit-user', [UserController::class, 'editUser'])->name('editUser');
     //enduser
 
     
