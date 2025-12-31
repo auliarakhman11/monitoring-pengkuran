@@ -37,7 +37,8 @@
             <div class="row justify-content-center clearfix row-deck">
                 <div class="col-12">
                     <div class="table-responsive">
-                        <table class="table js-basic-example dataTable table-custom" id="table">
+                        <table class="table js-basic-example dataTable table-custom" id="table"
+                            style="font-size: 12px;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -64,6 +65,29 @@
                                         <td>{{ $d->no_tlp }}</td>
                                         <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                         <td>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" aria-expanded="false">
+                                                    Aksi
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#model_penjadwalan{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-calendar-check-o"
+                                                            aria-hidden="true"></i> Penjadwalan</a>
+                                                    <a class="dropdown-item" href="#model_edit{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
+                                                    @if ($d->file_name)
+                                                        <a class="dropdown-item btn_lihat_file" href="#model_lihat_file"
+                                                            data-toggle="modal" file_name="{{ $d->file_name }}"
+                                                            jenis_file="{{ $d->jenis_file }}"><i class="fa fa-eye"></i>
+                                                            Lihat File</a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                                data-target="#model_penjadwalan{{ $d->id }}">
+                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                            </button>
                                             <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                                 data-target="#model_edit{{ $d->id }}">
                                                 <i class="fa fa-edit"></i>
@@ -75,18 +99,17 @@
                                                     jenis_file="{{ $d->jenis_file }}" data-target="#model_lihat_file">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                            @endif
+                                            @endif --}}
 
-                                            {{-- <form class="d-inline-block" action="{{ route('dropKaryawan') }}"
-                                                method="post">
+                                            <form class="d-inline-block" action="{{ route('dropBerkas') }}" method="post">
                                                 @csrf
-                                                <input type="hidden" name="id" value="{{ $k->id }}">
+                                                <input type="hidden" name="id" value="{{ $d->id }}">
                                                 <button type="submit"
-                                                    onclick="return confirm('Apakah anda yakin ingin menghapus data karyawan?')"
-                                                    class="btn btn-sm btn-primary">
+                                                    onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"
+                                                    class="btn btn-sm btn-danger">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                            </form> --}}
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -276,6 +299,68 @@
                 </div>
             </div>
         </form>
+
+        @if (session()->get('role_id') == 3)
+        @else
+            <form action="{{ route('editBerkas') }}" method="post">
+                @csrf
+                @method('patch')
+                <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Penjadwalan Oleh Admin</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+
+                                    <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Pengukuran</label>
+                                            <input type="date" class="form-control" name="tgl_pengukuran"
+                                                value="{{ $d->tgl_pengukuran }}" required>
+                                        </div>
+                                    </div>
+
+                                    @if ($d->pengukuran)
+                                        @foreach ($d->pengukuran as $p)
+                                            <div class="col-12">
+                                                {{-- <div class="col-8">
+                                                    <p><b>{{ $p->petugas->name }}</b></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="checkbox" class="fr">
+                                                </div> --}}
+
+                                                <div class="fancy-checkbox">
+                                                    <label><span>{{ $p->petugas->name }}</span><input type="checkbox"
+                                                            value="{{ $p->id }}"></label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        @endif
     @endforeach
 
     <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

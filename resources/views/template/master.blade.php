@@ -29,6 +29,12 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
+    @if (!Session::has('name'))
+        <script>
+            window.location.href = "/logout";
+        </script>
+    @endif
+
 </head>
 
 <body data-theme="light" class="font-nunito right_icon_toggle">

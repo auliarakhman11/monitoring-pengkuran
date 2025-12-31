@@ -2,7 +2,8 @@
     <button type="button" class="btn-toggle-offcanvas"><i class="fa fa-arrow-left"></i></button>
     <div class="sidebar-scroll">
         <div class="user-account">
-            <img src="{{ asset('img') }}/Logo_BPN-KemenATR.png" class="rounded-circle user-photo" alt="User Profile Picture">
+            <img src="{{ asset('img') }}/Logo_BPN-KemenATR.png" class="rounded-circle user-photo"
+                alt="User Profile Picture">
             <div class="dropdown">
                 <span>Welcome,</span>
                 <strong>{{ session()->get('name') ? session()->get('name') : '' }}</strong>
@@ -58,12 +59,14 @@
                             </ul>
                         </li>
 
-                        <li class="{{ Request::is(['loket']) ? 'active' : '' }}">
+                        <li class="{{ Request::is(['loket', 'penjadwalan']) ? 'active' : '' }}">
                             <a href="javascript:void(0)" class="has-arrow"><i
-                                    class="fa fa-address-card"></i><span>Loket</span></a>
+                                    class="fa fa-address-card"></i><span>Berkas</span></a>
                             <ul>
                                 <li class="{{ Request::is('loket') ? 'active' : '' }}"><a
                                         href="{{ route('loket') }}">Input Berkas</a></li>
+                                <li class="{{ Request::is('penjadwalan') ? 'active' : '' }}"><a
+                                        href="{{ route('penjadwalan') }}">Penjadwalan</a></li>
                             </ul>
                         </li>
 

@@ -10,11 +10,15 @@ class Berkas extends Model
     use HasFactory;
 
     protected $table = 'berkas';
-    protected $fillable = ['proses_id','no_berkas','tahun','kelurahan','alamat','nm_pemohon','no_tlp','tgl','tgl_pengkuran','ket','user_id','void','file_name','jenis_file'];
+    protected $fillable = ['proses_id', 'no_berkas', 'tahun', 'kelurahan', 'alamat', 'nm_pemohon', 'no_tlp', 'tgl', 'tgl_pengkuran', 'ket', 'user_id', 'void', 'file_name', 'jenis_file'];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function pengukuran()
+    {
+        return $this->hasMany(Pengukuran::class, 'berkas_id', 'id');
+    }
 }

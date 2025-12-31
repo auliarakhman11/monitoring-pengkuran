@@ -36,7 +36,7 @@ class AuthController extends Controller
 
                     Auth::login($user);
                     session()->put('username', $user->username);
-                    session()->put('role', $user->role);
+                    session()->put('role_id', $user->role_id);
                     session()->put('name', $user->name);
 
                     return redirect(route('home'));
@@ -61,7 +61,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         session()->forget('username');
-        session()->forget('role');
+        session()->forget('role_id');
         session()->forget('name');
         return redirect(route('loginPage'))->with('success', 'Logout Berhasil');
     }

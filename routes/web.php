@@ -28,8 +28,15 @@ Route::middleware('auth')->group(function () {
     //endHome
 
     //loket
-    Route::get('loket',[BerkasController::class,'loket'])->name('loket');
+    Route::get('loket', [BerkasController::class, 'loket'])->name('loket');
+    Route::post('addBerkas', [BerkasController::class, 'addBerkas'])->name('addBerkas');
+    Route::patch('editBerkas', [BerkasController::class, 'editBerkas'])->name('editBerkas');
     //endloket
+
+    //penjadwalan
+    Route::get('penjadwalan', [BerkasController::class, 'penjadwalan'])->name('penjadwalan');
+    Route::post('dropBerkas', [BerkasController::class, 'dropBerkas'])->name('dropBerkas');
+    //endpenjadwalan
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -39,7 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('edit-user', [UserController::class, 'editUser'])->name('editUser');
     //enduser
 
-    
+
     //block
     Route::get('forbidden-access', [AuthController::class, 'block'])->name('block');
     //endblock
