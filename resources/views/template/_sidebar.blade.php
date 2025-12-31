@@ -1,4 +1,4 @@
-<div id="left-sidebar" class="sidebar">
+<div id="left-sidebar" class="sidebar open">
     <button type="button" class="btn-toggle-offcanvas"><i class="fa fa-arrow-left"></i></button>
     <div class="sidebar-scroll">
         <div class="user-account">

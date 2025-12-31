@@ -6,11 +6,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h2 class="float-left">Loket Pengukuran</h2>
-                        <button type="button" class="btn btn-sm btn-primary float-right ml-2" data-toggle="modal"
-                            data-target="#modal_tambah">
-                            <i class="fa fa-plus-circle"></i>
-                            Tambah Data
-                        </button>
+                        
                         {{-- <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-dashboard"></i></a>
                             </li>
@@ -46,8 +42,9 @@
                                     <th>Pemohon</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
+                                    <th>Penjadwalan</th>
                                     <th>No WA</th>
-                                    <th>Tanggal</th>
+                                    <th>Tanggal<br>Input</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -62,7 +59,21 @@
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
-                                        <td>{{ $d->no_tlp }}</td>
+                                        <td>
+                                            @if ($d->tgl_pengukuran)
+                                                {{ date('d/m/Y', strtotime($d->tgl_pengukuran)) }}<br>
+                                            @else
+                                                -<br>
+                                            @endif
+                                            @if ($d->pengukuran)
+                                                @foreach ($d->pengukuran as $pe)
+                                                    {{ $pe->petugas->name }}<br>
+                                                @endforeach
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td><a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}" target="_blank">{{ $d->no_tlp }}</a></td>
                                         <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
@@ -82,6 +93,9 @@
                                                             jenis_file="{{ $d->jenis_file }}"><i class="fa fa-eye"></i>
                                                             Lihat File</a>
                                                     @endif
+                                                    <a class="dropdown-item" href="#model_tutup_berkas{{ $d->id }}" data-toggle="modal"><i class="fa fa-times-circle" aria-hidden="true"></i> Tutup Berkas</a>
+                                                    <a class="dropdown-item" href="{{ route('dropBerkas',$d->id) }}" onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i class="fa fa-trash"></i> Hapus</a>
+                                                    
                                                 </div>
                                             </div>
                                             {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
@@ -101,7 +115,7 @@
                                                 </button>
                                             @endif --}}
 
-                                            <form class="d-inline-block" action="{{ route('dropBerkas') }}" method="post">
+                                            {{-- <form class="d-inline-block" action="{{ route('dropBerkas') }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $d->id }}">
                                                 <button type="submit"
@@ -109,7 +123,7 @@
                                                     class="btn btn-sm btn-danger">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                            </form>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -125,104 +139,16 @@
         </div>
     </div>
 
-
-    <form action="{{ route('addBerkas') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="modal fade" id="modal_tambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Tambah Berkas</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="row">
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Tanggal Input</label>
-                                    <input type="date" value="{{ date('Y-m-d') }}" class="form-control" name="tgl"
-                                        required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Nomor Berkas</label>
-                                    <input type="text" class="form-control" name="no_berkas" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Tahun</label>
-                                    <input type="text" class="form-control" name="tahun" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Nama Pemohon</label>
-                                    <input type="text" class="form-control" name="nm_pemohon" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Kelurahan</label>
-                                    <input type="text" class="form-control" name="kelurahan" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Nomor WA</label>
-                                    <input type="number" class="form-control" name="no_tlp" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Alamat Bidang Tanah</label>
-                                    <textarea class="form-control" name="alamat" cols="30" rows="3"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12">
-                                <div class="form-group">
-                                    <label for="">Upload File</label>
-                                    <input type="file" name="file_name" class="form-control"
-                                        accept="application/pdf, image/png, image/jpeg">
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
     @foreach ($berkas as $d)
         <form action="{{ route('editBerkas') }}" method="post">
             @csrf
             @method('patch')
             <div class="modal fade" id="model_edit{{ $d->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                aria-labelledby="exampleModalEditBerkas" aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Berkas</h5>
+                            <h5 class="modal-title" id="exampleModalEditBerkas">Edit Berkas</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -301,16 +227,14 @@
         </form>
 
         @if (session()->get('role_id') == 3)
-        @else
-            <form action="{{ route('editBerkas') }}" method="post">
+            <form action="{{ route('addPengukuranPetugas') }}" method="post">
                 @csrf
-                @method('patch')
                 <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    aria-labelledby="exampleModalPenjadwalan" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Penjadwalan Oleh Admin</h5>
+                                <h5 class="modal-title" id="exampleModalPenjadwalan">Penjadwalan Oleh Petugas</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -329,46 +253,200 @@
                                         </div>
                                     </div>
 
-                                    @if ($d->pengukuran)
-                                        @foreach ($d->pengukuran as $p)
+                                    @if (count($d->pengukuran) > 0)
+                                        {{-- @foreach ($d->pengukuran as $p)
                                             <div class="col-12">
-                                                {{-- <div class="col-8">
-                                                    <p><b>{{ $p->petugas->name }}</b></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <input type="checkbox" class="fr">
-                                                </div> --}}
 
                                                 <div class="fancy-checkbox">
-                                                    <label><span>{{ $p->petugas->name }}</span><input type="checkbox"
-                                                            value="{{ $p->id }}"></label>
+                                                    <label><input type="checkbox" value="{{ $p->id }}"><span>{{ $p->petugas->name }}</span></label>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        @endforeach --}}
+
+                                        
+                                        <table class="table tabel-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Petugas</th>
+                                                    <th>Hapus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($d->pengukuran as $p)
+                                                    <tr>
+                                                        <td>{{ $p->petugas->name }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        
                                     @endif
+
+                                    <div class="col-8">
+                                        <p><b>{{ session()->get('name') }}</b></p>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="hidden" name="petugas_id" value="{{ Auth::id() }}">
+                                        <button type="submit"
+                                                onclick="return confirm('Apakah anda yakin?')"
+                                                class="btn btn-sm btn-primary">
+                                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pilih Jadwal
+                                            </button>
+                                    </div>
 
                                 </div>
 
-
+                                
 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Edit</button>
+                                {{-- <button type="submit" class="btn btn-primary">Simpan</button> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        @else
+            <form action="{{ route('addPengukuranAdmin') }}" method="post">
+                @csrf
+                <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalPenjadwalan" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalPenjadwalan">Penjadwalan Oleh Admin</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+
+                                    <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Pengukuran</label>
+                                            <input type="date" class="form-control" name="tgl_pengukuran"
+                                                value="{{ $d->tgl_pengukuran }}" required>
+                                        </div>
+                                    </div>
+
+                                    @if (count($d->pengukuran) > 0)
+                                        {{-- @foreach ($d->pengukuran as $p)
+                                            <div class="col-12">
+
+                                                <div class="fancy-checkbox">
+                                                    <label><input type="checkbox" value="{{ $p->id }}"><span>{{ $p->petugas->name }}</span></label>
+                                                </div>
+                                            </div>
+                                        @endforeach --}}
+
+                                        
+                                        <table class="table tabel-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Petugas</th>
+                                                    <th>Hapus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($d->pengukuran as $p)
+                                                    <tr>
+                                                        <td>{{ $p->petugas->name }}</td>
+                                                        <td><a href="{{ route('dropPengkuran',$p->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data?')"><i class="fa fa-trash"></i></a></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        
+                                    @endif
+
+                                </div>
+
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Petugas Ukur</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_petugas{{ $d->id }}">
+                                        <tr>
+                                            <td>
+                                                <select name="petugas_id[]" class="form-control">
+                                                    <option value="">Pilih Petugas</option>
+                                                    @foreach ($petugas as $pt)
+                                                        <option value="{{ $pt->id }}">{{ $pt->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-primary btn_tambah_petugas" pengukuran_id="{{ $d->id }}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
         @endif
+
+        <form action="{{ route('tutupBerkas') }}" method="post">
+            @csrf
+            <div class="modal fade" id="model_tutup_berkas{{ $d->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalTutupBerkas" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalTutupBerkas">Tutup Berkas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row">
+
+                                <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="">Alasan Penutupan Berkas</label>
+                                        <input type="text" class="form-control" name="ket" required>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Tutup Berkas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     @endforeach
 
-    <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLihatFile"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Detail File</h5>
+                    <h5 class="modal-title" id="exampleModalLihatFile">Detail File</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -430,6 +508,32 @@
                     $("#table_file").html(image);
                 }
 
+            });
+
+            var count_petugas = 1;
+            $(document).on('click', '.btn_tambah_petugas', function() {
+                let pengukuran_id = $(this).attr('pengukuran_id');
+                count_petugas = count_petugas + 1;
+                var html_code = '<tr id="row' + count_petugas + '">';
+
+                html_code +=
+                    '<td><select name="petugas_id[]" class="form-control" required><option value="">Pilih Petugas</option>@foreach ($petugas as $pt)<option value="{{ $pt->id }}">{{ $pt->name }}</option>@endforeach</select></td>';
+
+                html_code +=
+                    '<td><button type="button" class="btn btn-sm btn-danger remove_petugas" data-row="row' + count_petugas + '"><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
+
+                html_code += "</tr>";
+
+                $('#table_petugas'+pengukuran_id).append(html_code);
+                // $('.select2bs4').select2({
+                //     theme: 'bootstrap4',
+                //     tags: true,
+                // });
+            });
+
+            $(document).on('click', '.remove_petugas', function() {
+                var delete_row = $(this).data("row");
+                $('#' + delete_row).remove();
             });
 
 

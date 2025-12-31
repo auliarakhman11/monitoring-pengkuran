@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berkas;
+use App\Models\History;
+use App\Models\Pengukuran;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +43,7 @@ class BerkasController extends Controller
             $file_name = NULL;
         }
 
-        Berkas::create([
+        $berkas = Berkas::create([
             'proses_id' => 1,
             'no_berkas' => $request->no_berkas,
             'tahun' => $request->tahun,
@@ -54,6 +56,12 @@ class BerkasController extends Controller
             'void' => 0,
             'file_name' => $file_name,
             'jenis_file' => $extension
+        ]);
+
+        History::create([
+            'berkas_id' => $berkas->id,
+            'proses_id' => 1,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->back()->with('success', 'Berkas berhasil dibuat');
@@ -85,13 +93,86 @@ class BerkasController extends Controller
         ]);
     }
 
-    public function dropBerkas(Request $request)
+    public function dropBerkas($id)
     {
-        Berkas::where('id', $request->id)->update([
+        Berkas::where('id', $id)->update([
             'void' => 1,
             'user_id' => Auth::id()
         ]);
 
         return redirect()->back()->with('success', 'Berkas berhasil dihapus');
     }
+
+    public function addPengukuranAdmin(Request $request){
+        Berkas::where('id',$request->id)->update([
+            'tgl_pengukuran' => $request->tgl_pengukuran
+        ]);
+
+        $petugas_id = $request->petugas_id;
+
+        if (count($petugas_id) > 0) {
+
+            for ($count = 0; $count < count($petugas_id); $count++) {
+                if ($petugas_id[$count] == '') {
+                    continue;
+                }
+                Pengukuran::create([
+                    'berkas_id' => $request->id,
+                    'petugas_id' => $petugas_id[$count],
+                    'user_id' => Auth::id(),
+                    'void' => 0
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Pengkuran berhasil dijadwalkan');
+
+        
+    }
+
+    public function dropPengkuran($id){
+        Pengukuran::where('id',$id)->update([
+                    'void' => 1,
+                    'user_id' => Auth::id()
+                ]);
+
+        return redirect()->back()->with('success', 'Data petugas berhasil dihapus');
+    }
+
+    public function addPengukuranPetugas(Request $request){
+        Berkas::where('id',$request->id)->update([
+            'tgl_pengukuran' => $request->tgl_pengukuran
+        ]);
+
+        Pengukuran::create([
+                    'berkas_id' => $request->id,
+                    'petugas_id' => $request->petugas_id,
+                    'user_id' => Auth::id(),
+                    'void' => 0
+                ]);
+
+        return redirect()->back()->with('success', 'Pengkuran berhasil dijadwalkan');
+    }
+
+    public function tutupBerkas(Request $request)
+    {
+        Berkas::where('id', $request->id)->update([
+            'proses_id' => 4,
+            'ket' => $request->ket,
+            'user_id' => Auth::id()
+        ]);
+
+        History::where('berkas_id',$request->id)->where('selesai',NULL)->update([
+            'selesai' => date('Y-m-d H:i:s')
+        ]);
+
+        History::create([
+            'berkas_id' => $request->id,
+            'proses_id' => 4,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Berkas berhasil ditutup');
+    }
+
 }

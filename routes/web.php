@@ -35,7 +35,11 @@ Route::middleware('auth')->group(function () {
 
     //penjadwalan
     Route::get('penjadwalan', [BerkasController::class, 'penjadwalan'])->name('penjadwalan');
-    Route::post('dropBerkas', [BerkasController::class, 'dropBerkas'])->name('dropBerkas');
+    Route::post('dropBerkas/{id}', [BerkasController::class, 'dropBerkas'])->name('dropBerkas');
+    Route::post('addPengukuranAdmin', [BerkasController::class,'addPengukuranAdmin'])->name('addPengukuranAdmin');
+    Route::get('dropPengkuran/{id}', [BerkasController::class,'dropPengkuran'])->name('dropPengkuran');
+    Route::post('addPengukuranPetugas', [BerkasController::class,'addPengukuranPetugas'])->name('addPengukuranPetugas');
+    Route::post('tutupBerkas', [BerkasController::class,'tutupBerkas'])->name('tutupBerkas');
     //endpenjadwalan
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
