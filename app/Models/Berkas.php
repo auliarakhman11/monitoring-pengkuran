@@ -17,9 +17,14 @@ class Berkas extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function proses()
+    {
+        return $this->belongsTo(Proses::class, 'proses_id', 'id');
+    }
+
     public function pengukuran()
     {
-        return $this->hasMany(Pengukuran::class, 'berkas_id', 'id')->where('pengukuran.void',0);
+        return $this->hasMany(Pengukuran::class, 'berkas_id', 'id')->where('pengukuran.void', 0);
     }
 
     public function history()

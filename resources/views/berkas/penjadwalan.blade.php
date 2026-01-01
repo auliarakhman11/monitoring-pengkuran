@@ -5,8 +5,8 @@
             <div class="block-header">
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="float-left">Loket Pengukuran</h2>
-                        
+                        <h2 class="float-left">Penjadwalan Pengukuran</h2>
+
                         {{-- <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-dashboard"></i></a>
                             </li>
@@ -33,8 +33,7 @@
             <div class="row justify-content-center clearfix row-deck">
                 <div class="col-12">
                     <div class="table-responsive">
-                        <table class="table js-basic-example dataTable table-custom" id="table"
-                            style="font-size: 12px;">
+                        <table class="table js-basic-example dataTable table-custom" id="table" style="font-size: 12px;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -61,7 +60,7 @@
                                         <td>{{ $d->alamat }}</td>
                                         <td>
                                             @if ($d->tgl_pengukuran)
-                                                {{ date('d/m/Y', strtotime($d->tgl_pengukuran)) }}<br>
+                                                {{ date('d/m/Y H:i', strtotime($d->tgl_pengukuran)) }}<br>
                                             @else
                                                 -<br>
                                             @endif
@@ -73,7 +72,8 @@
                                                 -
                                             @endif
                                         </td>
-                                        <td><a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}" target="_blank">{{ $d->no_tlp }}</a></td>
+                                        <td><a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}"
+                                                target="_blank">{{ $d->no_tlp }}</a></td>
                                         <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
@@ -93,9 +93,13 @@
                                                             jenis_file="{{ $d->jenis_file }}"><i class="fa fa-eye"></i>
                                                             Lihat File</a>
                                                     @endif
-                                                    <a class="dropdown-item" href="#model_tutup_berkas{{ $d->id }}" data-toggle="modal"><i class="fa fa-times-circle" aria-hidden="true"></i> Tutup Berkas</a>
-                                                    <a class="dropdown-item" href="{{ route('dropBerkas',$d->id) }}" onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i class="fa fa-trash"></i> Hapus</a>
-                                                    
+                                                    <a class="dropdown-item" href="#model_tutup_berkas{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-times-circle"
+                                                            aria-hidden="true"></i> Tutup Berkas</a>
+                                                    <a class="dropdown-item" href="{{ route('dropBerkas', $d->id) }}"
+                                                        onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i
+                                                            class="fa fa-trash"></i> Hapus</a>
+
                                                 </div>
                                             </div>
                                             {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
@@ -263,7 +267,7 @@
                                             </div>
                                         @endforeach --}}
 
-                                        
+
                                         <table class="table tabel-sm">
                                             <thead>
                                                 <tr>
@@ -280,7 +284,6 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        
                                     @endif
 
                                     <div class="col-8">
@@ -288,16 +291,15 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="hidden" name="petugas_id" value="{{ Auth::id() }}">
-                                        <button type="submit"
-                                                onclick="return confirm('Apakah anda yakin?')"
-                                                class="btn btn-sm btn-primary">
-                                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pilih Jadwal
-                                            </button>
+                                        <button type="submit" onclick="return confirm('Apakah anda yakin?')"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pilih Jadwal
+                                        </button>
                                     </div>
 
                                 </div>
 
-                                
+
 
                             </div>
                             <div class="modal-footer">
@@ -345,7 +347,7 @@
                                             </div>
                                         @endforeach --}}
 
-                                        
+
                                         <table class="table tabel-sm">
                                             <thead>
                                                 <tr>
@@ -357,12 +359,14 @@
                                                 @foreach ($d->pengukuran as $p)
                                                     <tr>
                                                         <td>{{ $p->petugas->name }}</td>
-                                                        <td><a href="{{ route('dropPengkuran',$p->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data?')"><i class="fa fa-trash"></i></a></td>
+                                                        <td><a href="{{ route('dropPengkuran', $p->id) }}"
+                                                                class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Apakah anda yakin ingin menghapus data?')"><i
+                                                                    class="fa fa-trash"></i></a></td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        
                                     @endif
 
                                 </div>
@@ -385,7 +389,9 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-primary btn_tambah_petugas" pengukuran_id="{{ $d->id }}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-sm btn-primary btn_tambah_petugas"
+                                                    pengukuran_id="{{ $d->id }}"><i class="fa fa-plus"
+                                                        aria-hidden="true"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -438,7 +444,6 @@
                 </div>
             </div>
         </form>
-
     @endforeach
 
     <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLihatFile"
@@ -520,11 +525,12 @@
                     '<td><select name="petugas_id[]" class="form-control" required><option value="">Pilih Petugas</option>@foreach ($petugas as $pt)<option value="{{ $pt->id }}">{{ $pt->name }}</option>@endforeach</select></td>';
 
                 html_code +=
-                    '<td><button type="button" class="btn btn-sm btn-danger remove_petugas" data-row="row' + count_petugas + '"><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
+                    '<td><button type="button" class="btn btn-sm btn-danger remove_petugas" data-row="row' +
+                    count_petugas + '"><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
 
                 html_code += "</tr>";
 
-                $('#table_petugas'+pengukuran_id).append(html_code);
+                $('#table_petugas' + pengukuran_id).append(html_code);
                 // $('.select2bs4').select2({
                 //     theme: 'bootstrap4',
                 //     tags: true,

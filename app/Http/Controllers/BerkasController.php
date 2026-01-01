@@ -25,7 +25,7 @@ class BerkasController extends Controller
 
         return view('berkas.loket', [
             'title' => 'Loket',
-            'berkas' => Berkas::where('proses_id', 1)->where('void', 0)->where('tgl', '>=', $tgl1)->where('tgl', '<=', $tgl2)->get(),
+            'berkas' => Berkas::where('proses_id', 1)->where('void', 0)->where('tgl', '>=', $tgl1)->where('tgl', '<=', $tgl2)->orderBy('berkas.id', 'DESC')->get(),
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
         ]);
@@ -88,7 +88,7 @@ class BerkasController extends Controller
 
         return view('berkas.penjadwalan', [
             'title' => 'Penjadwalan',
-            'berkas' => Berkas::where('proses_id', 1)->where('void', 0)->with(['pengukuran', 'pengukuran.petugas'])->get(),
+            'berkas' => Berkas::where('proses_id', 1)->where('void', 0)->with(['pengukuran', 'pengukuran.petugas'])->orderBy('berkas.id', 'ASC')->get(),
             'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
         ]);
     }
@@ -103,8 +103,9 @@ class BerkasController extends Controller
         return redirect()->back()->with('success', 'Berkas berhasil dihapus');
     }
 
-    public function addPengukuranAdmin(Request $request){
-        Berkas::where('id',$request->id)->update([
+    public function addPengukuranAdmin(Request $request)
+    {
+        Berkas::where('id', $request->id)->update([
             'tgl_pengukuran' => $request->tgl_pengukuran
         ]);
 
@@ -126,30 +127,30 @@ class BerkasController extends Controller
         }
 
         return redirect()->back()->with('success', 'Pengkuran berhasil dijadwalkan');
-
-        
     }
 
-    public function dropPengkuran($id){
-        Pengukuran::where('id',$id)->update([
-                    'void' => 1,
-                    'user_id' => Auth::id()
-                ]);
+    public function dropPengkuran($id)
+    {
+        Pengukuran::where('id', $id)->update([
+            'void' => 1,
+            'user_id' => Auth::id()
+        ]);
 
         return redirect()->back()->with('success', 'Data petugas berhasil dihapus');
     }
 
-    public function addPengukuranPetugas(Request $request){
-        Berkas::where('id',$request->id)->update([
+    public function addPengukuranPetugas(Request $request)
+    {
+        Berkas::where('id', $request->id)->update([
             'tgl_pengukuran' => $request->tgl_pengukuran
         ]);
 
         Pengukuran::create([
-                    'berkas_id' => $request->id,
-                    'petugas_id' => $request->petugas_id,
-                    'user_id' => Auth::id(),
-                    'void' => 0
-                ]);
+            'berkas_id' => $request->id,
+            'petugas_id' => $request->petugas_id,
+            'user_id' => Auth::id(),
+            'void' => 0
+        ]);
 
         return redirect()->back()->with('success', 'Pengkuran berhasil dijadwalkan');
     }
@@ -162,7 +163,7 @@ class BerkasController extends Controller
             'user_id' => Auth::id()
         ]);
 
-        History::where('berkas_id',$request->id)->where('selesai',NULL)->update([
+        History::where('berkas_id', $request->id)->where('selesai', NULL)->update([
             'selesai' => date('Y-m-d H:i:s')
         ]);
 
@@ -175,4 +176,31 @@ class BerkasController extends Controller
         return redirect()->back()->with('success', 'Berkas berhasil ditutup');
     }
 
+    public function spsBerkas()
+    {
+        return view('berkas.sps_berkas', [
+            'title' => 'Penjadwalan',
+            'berkas' => Berkas::select('berkas.*')->selectRaw("datediff(current_date(), berkas.updated_at) as lama_tgl")->whereIn('proses_id', [1, 2])->where('void', 0)->where('tgl_pengukuran', '!=', NULL)->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('proses_id', 'DESC')->orderBy('berkas.id', 'ASC')->get(),
+        ]);
+    }
+
+    public function cetakSpsBerkas($id)
+    {
+        Berkas::where('id', $id)->update([
+            'proses_id' => 2,
+            'user_id' => Auth::id()
+        ]);
+
+        History::where('berkas_id', $id)->where('selesai', NULL)->update([
+            'selesai' => date('Y-m-d H:i:s')
+        ]);
+
+        History::create([
+            'berkas_id' => $id,
+            'proses_id' => 2,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'SPS dicetak');
+    }
 }

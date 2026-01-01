@@ -50,16 +50,18 @@
             <div class="tab-pane active" id="menu">
                 <nav id="left-sidebar-nav" class="sidebar-nav">
                     <ul id="main-menu" class="metismenu li_animation_delay">
-                        <li class="{{ Request::is(['/']) ? 'active' : '' }}">
+                        <li class="{{ Request::is(['/', 'kalender']) ? 'active' : '' }}">
                             <a href="javascript:void(0)" class="has-arrow"><i
-                                    class="fa fa-dashboard"></i><span>Dashboard</span></a>
+                                    class="fa fa-dashboard"></i><span>Laporan</span></a>
                             <ul>
                                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a
                                         href="{{ route('home') }}">Home</a></li>
+                                <li class="{{ Request::is('kalender') ? 'active' : '' }}"><a
+                                        href="{{ route('kalender') }}">Kalender</a></li>
                             </ul>
                         </li>
 
-                        <li class="{{ Request::is(['loket', 'penjadwalan']) ? 'active' : '' }}">
+                        <li class="{{ Request::is(['loket', 'penjadwalan', 'spsBerkas']) ? 'active' : '' }}">
                             <a href="javascript:void(0)" class="has-arrow"><i
                                     class="fa fa-address-card"></i><span>Berkas</span></a>
                             <ul>
@@ -67,6 +69,8 @@
                                         href="{{ route('loket') }}">Input Berkas</a></li>
                                 <li class="{{ Request::is('penjadwalan') ? 'active' : '' }}"><a
                                         href="{{ route('penjadwalan') }}">Penjadwalan</a></li>
+                                <li class="{{ Request::is('spsBerkas') ? 'active' : '' }}"><a
+                                        href="{{ route('spsBerkas') }}">Cetak SPS</a></li>
                             </ul>
                         </li>
 

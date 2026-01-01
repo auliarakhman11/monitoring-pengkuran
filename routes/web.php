@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerkasController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,11 +37,20 @@ Route::middleware('auth')->group(function () {
     //penjadwalan
     Route::get('penjadwalan', [BerkasController::class, 'penjadwalan'])->name('penjadwalan');
     Route::post('dropBerkas/{id}', [BerkasController::class, 'dropBerkas'])->name('dropBerkas');
-    Route::post('addPengukuranAdmin', [BerkasController::class,'addPengukuranAdmin'])->name('addPengukuranAdmin');
-    Route::get('dropPengkuran/{id}', [BerkasController::class,'dropPengkuran'])->name('dropPengkuran');
-    Route::post('addPengukuranPetugas', [BerkasController::class,'addPengukuranPetugas'])->name('addPengukuranPetugas');
-    Route::post('tutupBerkas', [BerkasController::class,'tutupBerkas'])->name('tutupBerkas');
+    Route::post('addPengukuranAdmin', [BerkasController::class, 'addPengukuranAdmin'])->name('addPengukuranAdmin');
+    Route::get('dropPengkuran/{id}', [BerkasController::class, 'dropPengkuran'])->name('dropPengkuran');
+    Route::post('addPengukuranPetugas', [BerkasController::class, 'addPengukuranPetugas'])->name('addPengukuranPetugas');
+    Route::post('tutupBerkas', [BerkasController::class, 'tutupBerkas'])->name('tutupBerkas');
     //endpenjadwalan
+
+    //sps
+    Route::get('spsBerkas', [BerkasController::class, 'spsBerkas'])->name('spsBerkas');
+    Route::get('cetakSpsBerkas/{id}', [BerkasController::class, 'cetakSpsBerkas'])->name('cetakSpsBerkas');
+    //end sps
+
+    //laporan
+    Route::get('kalender', [LaporanController::class, 'kalender'])->name('kalender');
+    //end alaporan
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 

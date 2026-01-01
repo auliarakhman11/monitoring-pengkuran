@@ -150,7 +150,7 @@
 
                             <div class="col-md-4 col-12">
                                 <div class="form-group">
-                                    <label for="">Kelurahan</label>
+                                    <label for="">Kelurahan/Desa</label>
                                     <input type="text" class="form-control" name="kelurahan" required>
                                 </div>
                             </div>
