@@ -37,7 +37,7 @@
 
 </head>
 
-<body data-theme="light" class="font-nunito right_icon_toggle offcanvas-active">
+<body data-theme="light" class="font-nunito right_icon_toggle">
     <div id="wrapper" class="theme-cyan">
 
         <!-- Page Loader -->

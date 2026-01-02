@@ -1,4 +1,4 @@
-<div id="left-sidebar" class="sidebar open">
+<div id="left-sidebar" class="sidebar">
     <button type="button" class="btn-toggle-offcanvas"><i class="fa fa-arrow-left"></i></button>
     <div class="sidebar-scroll">
         <div class="user-account">
@@ -71,6 +71,8 @@
                                         href="{{ route('penjadwalan') }}">Penjadwalan</a></li>
                                 <li class="{{ Request::is('spsBerkas') ? 'active' : '' }}"><a
                                         href="{{ route('spsBerkas') }}">Cetak SPS</a></li>
+                                <li class="{{ Request::is('selesaiSpsBerkas') ? 'active' : '' }}"><a
+                                        href="{{ route('selesaiSpsBerkas') }}">Selesai SPS</a></li>
                             </ul>
                         </li>
 

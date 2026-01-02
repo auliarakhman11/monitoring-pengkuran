@@ -86,7 +86,7 @@
                                         <td>{{ $d->alamat }}</td>
                                         <td>
                                             @if ($d->tgl_pengukuran)
-                                                {{ date('d/m/Y H:i', strtotime($d->tgl_pengukuran)) }}<br>
+                                                {{ date('d/m/Y', strtotime($d->tgl_pengukuran)) }}<br>
                                             @else
                                                 -<br>
                                             @endif
@@ -110,8 +110,8 @@
                                                 <div class="dropdown-menu">
                                                     @if ($d->proses_id == 2)
                                                         <a class="dropdown-item"
-                                                            href="{{ route('cetakSpsBerkas', $d->id) }}"
-                                                            onclick="return confirm('Apakah anda yakin ingin mencetak SPS?')"><i
+                                                            href="{{ route('pembayaranSpsBerkas', $d->id) }}"
+                                                            onclick="return confirm('Apakah anda yakin ingin membayar SPS?')"><i
                                                                 class="fa fa-check-circle" aria-hidden="true"></i>
                                                             Pembayaran SPS</a>
                                                     @else

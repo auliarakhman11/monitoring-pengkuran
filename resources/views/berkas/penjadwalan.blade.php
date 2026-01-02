@@ -60,7 +60,7 @@
                                         <td>{{ $d->alamat }}</td>
                                         <td>
                                             @if ($d->tgl_pengukuran)
-                                                {{ date('d/m/Y H:i', strtotime($d->tgl_pengukuran)) }}<br>
+                                                {{ date('d/m/Y', strtotime($d->tgl_pengukuran)) }}<br>
                                             @else
                                                 -<br>
                                             @endif

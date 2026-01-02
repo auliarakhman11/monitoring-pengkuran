@@ -67,17 +67,17 @@
 
 
 
-    <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLihatFile"
+    <div class="modal fade" id="model_detail_pengukuran" tabindex="-1" role="dialog" aria-labelledby="exampleModalDetailPengukuran"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLihatFile">Detail File</h5>
+                    <h5 class="modal-title" id="exampleModalDetailPengukuran">Detail Pengukuran</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="table_file">
+                <div class="modal-body" id="table_pengkuran">
 
                 </div>
                 <div class="modal-footer">
@@ -98,13 +98,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
+            var pengukuran = JSON.parse(`<?php echo $dt_p; ?>`);
+
+            console.log(pengukuran);
+            
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                initialDate: '2023-01-12',
+                initialDate: "{{ date('Y-m-d') }}",
                 navLinks: true, // can click day/week names to navigate views
                 selectable: true,
                 selectMirror: true,
@@ -124,66 +129,73 @@
                     // if (confirm('Are you sure you want to delete this event?')) {
                     //     arg.event.remove()
                     // }
-                    console.log(arg.event);
+                    console.log(arg.event.id);
+                    $('#table_pengkuran').html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>');
+                    $.get('detailPengukuran/' + arg.event.id, function (data) {
+                        $('#table_pengkuran').html(data);
+                    });
+
+                    $('#model_detail_pengukuran').modal('show');
 
                 },
-                editable: false,
+                editable: true,
                 dayMaxEvents: true, // allow "more" link when too many events
-                events: [{
-                        title: 'All Day Event',
-                        start: '2023-01-01'
-                    },
-                    {
-                        title: 'Long Event',
-                        start: '2023-01-07',
-                        end: '2023-01-10'
-                    },
-                    {
-                        groupId: 999,
-                        title: 'Repeating Event',
-                        start: '2023-01-09T16:00:00'
-                    },
-                    {
-                        groupId: 999,
-                        title: 'Repeating Event',
-                        start: '2023-01-16T16:00:00'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2023-01-11',
-                        end: '2023-01-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2023-01-12T10:30:00',
-                        end: '2023-01-12T12:30:00'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2023-01-12T12:00:00'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2023-01-12T14:30:00'
-                    },
-                    {
-                        title: 'Happy Hour',
-                        start: '2023-01-12T17:30:00'
-                    },
-                    {
-                        title: 'Dinner',
-                        start: '2023-01-12T20:00:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2023-01-13T07:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2023-01-28'
-                    }
-                ]
+                // events: [{
+                //         title: 'All Day Event',
+                //         start: '2023-01-01'
+                //     },
+                //     {
+                //         title: 'Long Event',
+                //         start: '2023-01-07',
+                //         end: '2023-01-10'
+                //     },
+                //     {
+                //         groupId: 999,
+                //         title: 'Repeating Event',
+                //         start: '2023-01-09T16:00:00'
+                //     },
+                //     {
+                //         groupId: 999,
+                //         title: 'Repeating Event',
+                //         start: '2023-01-16T16:00:00'
+                //     },
+                //     {
+                //         title: 'Conference',
+                //         start: '2023-01-11',
+                //         end: '2023-01-13'
+                //     },
+                //     {
+                //         title: 'Meeting',
+                //         start: '2023-01-12T10:30:00',
+                //         end: '2023-01-12T12:30:00'
+                //     },
+                //     {
+                //         title: 'Lunch',
+                //         start: '2023-01-12T12:00:00'
+                //     },
+                //     {
+                //         title: 'Meeting',
+                //         start: '2023-01-12T14:30:00'
+                //     },
+                //     {
+                //         title: 'Happy Hour',
+                //         start: '2023-01-12T17:30:00'
+                //     },
+                //     {
+                //         title: 'Dinner',
+                //         start: '2023-01-12T20:00:00'
+                //     },
+                //     {
+                //         title: 'Birthday Party',
+                //         start: '2023-01-13T07:00:00'
+                //     },
+                //     {
+                //         title: 'Click for Google',
+                //         url: 'http://google.com/',
+                //         start: '2023-01-28'
+                //     }
+                // ]
+                events: pengukuran
             });
 
             calendar.render();
@@ -214,22 +226,7 @@
             @endforeach
             <?php endif; ?>
 
-            $(document).on('click', '.btn_lihat_file', function() {
-
-                var url = "{{ asset('file_upload') }}/";
-                var file_name = $(this).attr('file_name');
-                var jenis_file = file_name.split(".");
-
-                if (jenis_file[1] == 'pdf') {
-                    var pdf = '<object data="' + url + file_name +
-                        '" type="application/pdf" width="750" height="500"></object>';
-                    $("#table_file").html(pdf);
-                } else {
-                    var image = '<img src="' + url + file_name + '" class="img-fluid">';
-                    $("#table_file").html(image);
-                }
-
-            });
+            
 
         });
     </script>
