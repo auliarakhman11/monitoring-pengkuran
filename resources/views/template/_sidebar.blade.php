@@ -61,12 +61,15 @@
                             </ul>
                         </li>
 
-                        <li class="{{ Request::is(['loket', 'penjadwalan', 'spsBerkas']) ? 'active' : '' }}">
+                        <li
+                            class="{{ Request::is(['loket', 'penjadwalan', 'spsBerkas', 'selesaiSpsBerkas', 'pengecekan']) ? 'active' : '' }}">
                             <a href="javascript:void(0)" class="has-arrow"><i
                                     class="fa fa-address-card"></i><span>Berkas</span></a>
                             <ul>
                                 <li class="{{ Request::is('loket') ? 'active' : '' }}"><a
                                         href="{{ route('loket') }}">Input Berkas</a></li>
+                                <li class="{{ Request::is('pengecekan') ? 'active' : '' }}"><a
+                                        href="{{ route('pengecekan') }}">Pengecekan</a></li>
                                 <li class="{{ Request::is('penjadwalan') ? 'active' : '' }}"><a
                                         href="{{ route('penjadwalan') }}">Penjadwalan</a></li>
                                 <li class="{{ Request::is('spsBerkas') ? 'active' : '' }}"><a

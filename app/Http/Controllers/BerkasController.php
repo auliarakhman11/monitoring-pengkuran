@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berkas;
 use App\Models\History;
 use App\Models\Pengukuran;
+use App\Models\UploadFile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class BerkasController extends Controller
 
         return view('berkas.loket', [
             'title' => 'Loket',
-            'berkas' => Berkas::where('proses_id', 1)->where('void', 0)->where('tgl', '>=', $tgl1)->where('tgl', '<=', $tgl2)->orderBy('berkas.id', 'DESC')->get(),
+            'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->where('tgl', '>=', $tgl1)->where('tgl', '<=', $tgl2)->orderBy('berkas.id', 'DESC')->get(),
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
         ]);
@@ -43,10 +44,11 @@ class BerkasController extends Controller
             $file_name = NULL;
         }
 
+        $no_sistem = 'SP-' . strtoupper(Str::random(5)) . date('Ymd');
+
         $berkas = Berkas::create([
-            'proses_id' => 1,
-            'no_berkas' => $request->no_berkas,
-            'tahun' => $request->tahun,
+            'proses_id' => 5,
+            'no_sistem' => $no_sistem,
             'kelurahan' => $request->kelurahan,
             'alamat' => $request->alamat,
             'nm_pemohon' => $request->nm_pemohon,
@@ -54,24 +56,24 @@ class BerkasController extends Controller
             'tgl' => $request->tgl,
             'user_id' => Auth::id(),
             'void' => 0,
-            'file_name' => $file_name,
-            'jenis_file' => $extension
+            // 'file_name' => $file_name,
+            // 'jenis_file' => $extension
         ]);
 
         History::create([
             'berkas_id' => $berkas->id,
-            'proses_id' => 1,
+            'proses_id' => 5,
             'user_id' => Auth::id(),
         ]);
 
-        return redirect()->back()->with('success', 'Berkas berhasil dibuat');
+        return redirect()->back()->with('no_sistem', $no_sistem);
     }
 
     public function editBerkas(Request $request)
     {
         Berkas::where('id', $request->id)->update([
-            'no_berkas' => $request->no_berkas,
-            'tahun' => $request->tahun,
+            // 'no_berkas' => $request->no_berkas,
+            // 'tahun' => $request->tahun,
             'kelurahan' => $request->kelurahan,
             'alamat' => $request->alamat,
             'nm_pemohon' => $request->nm_pemohon,
@@ -233,4 +235,41 @@ class BerkasController extends Controller
         ]);
     }
 
+    public function pengecekan()
+    {
+
+        return view('berkas.pengecekan', [
+            'title' => 'Pengecekan',
+            'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->with(['uploadFile'])->orderBy('berkas.id', 'ASC')->get(),
+        ]);
+    }
+
+    public function uplaodBerkas(Request $request)
+    {
+        $nm_file = $request->nm_file;
+
+        foreach ($request->file('file_name') as $index => $file) {
+            $extension = $file->extension();
+            $file_name = Str::random(5) . date('ymd') . '.' . $extension;
+            $file->move('file_upload/', $file_name);
+
+            UploadFile::create([
+                'berkas_id' => $request->id,
+                'nm_file' => $nm_file[$index],
+                'file_name' => $file_name,
+                'jenis_file' => $extension
+            ]);
+        }
+
+        // if ($request->hasFile('file_name')) {
+        //     $extension = $request->file('file_name')->extension();
+        //     $file_name = Str::random(5) . date('ymd') . '.' . $extension;
+        //     $request->file('file_name')->move('file_upload/', $file_name);
+        // } else {
+        //     $extension = NULL;
+        //     $file_name = NULL;
+        // }
+
+        return redirect()->back()->with('success', 'Berkas berhasil diuplaod');
+    }
 }

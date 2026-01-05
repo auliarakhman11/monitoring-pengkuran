@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Berkas</th>
+                                    <th>No Sistem</th>
                                     <th>Pemohon</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
@@ -55,7 +55,7 @@
                                 @foreach ($berkas as $d)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $d->no_berkas }} / {{ $d->tahun }}</td>
+                                        <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
@@ -120,7 +120,7 @@
         </div>
     </div>
 
-    
+
 
     <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLihatFile"
         aria-hidden="true">

@@ -41,7 +41,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Berkas</th>
+                                    <th>No Sistem</th>
                                     <th>Pemohon</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
@@ -57,7 +57,7 @@
                                 @foreach ($berkas as $d)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $d->no_berkas }} / {{ $d->tahun }}</td>
+                                        <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
@@ -107,7 +107,7 @@
         @csrf
         <div class="modal fade" id="modal_tambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tambah Berkas</h5>
@@ -119,7 +119,7 @@
 
                         <div class="row">
 
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Tanggal Input</label>
                                     <input type="date" value="{{ date('Y-m-d') }}" class="form-control" name="tgl"
@@ -127,55 +127,55 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            {{-- <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Nomor Berkas</label>
                                     <input type="text" class="form-control" name="no_berkas" required>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Tahun</label>
                                     <input type="text" class="form-control" name="tahun" required>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Nama Pemohon</label>
                                     <input type="text" class="form-control" name="nm_pemohon" required>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Kelurahan/Desa</label>
                                     <input type="text" class="form-control" name="kelurahan" required>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Nomor WA</label>
                                     <input type="number" class="form-control" name="no_tlp" required>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Alamat Bidang Tanah</label>
                                     <textarea class="form-control" name="alamat" cols="30" rows="3"></textarea>
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            {{-- <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Upload File</label>
                                     <input type="file" name="file_name" class="form-control"
                                         accept="application/pdf, image/png, image/jpeg">
                                 </div>
-                            </div>
+                            </div> --}}
 
 
                         </div>
@@ -196,7 +196,7 @@
             @method('patch')
             <div class="modal fade" id="model_edit{{ $d->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Edit Berkas</h5>
@@ -210,7 +210,7 @@
 
                                 <input type="hidden" name="id" value="{{ $d->id }}">
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Tanggal Input</label>
                                         <input type="date" class="form-control" name="tgl"
@@ -218,7 +218,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                {{-- <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nomor Berkas</label>
                                         <input type="text" class="form-control" name="no_berkas"
@@ -226,15 +226,15 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Tahun</label>
                                         <input type="text" class="form-control" name="tahun"
                                             value="{{ $d->tahun }}" required>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nama Pemohon</label>
                                         <input type="text" class="form-control" name="nm_pemohon"
@@ -242,7 +242,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Kelurahan</label>
                                         <input type="text" class="form-control" name="kelurahan"
@@ -250,7 +250,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nomor WA</label>
                                         <input type="number" class="form-control" name="no_tlp"
@@ -258,7 +258,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Alamat Bidang Tanah</label>
                                         <textarea class="form-control" name="alamat" cols="30" rows="3">{{ $d->alamat }}</textarea>
@@ -298,6 +298,26 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal_no_sistem" tabindex="-1" role="dialog" aria-labelledby="exampleNoSistem"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleNoSistem">Status Berkas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>Berkas berhasil diinput dengan nomor sistem <b id="no_sistem"></b></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- @foreach ($errors->all() as $error)
         
     @endforeach --}}
@@ -314,10 +334,15 @@
             toastr.options.positionClass = 'toast-top-right';
             toastr.options.showDuration = 1000;
             toastr['success']('<?= session('success') ?>');
+
             <?php endif; ?>
 
+            <?php if(session('no_sistem')): ?>
 
+            $('#modal_no_sistem').modal('show');
+            $('#no_sistem').html('<?= session('success') ?>');
 
+            <?php endif; ?>
 
 
             <?php if(session('errors')): ?>

@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Berkas</th>
+                                    <th>No Sistem</th>
                                     <th>Pemohon</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
@@ -54,7 +54,7 @@
                                 @foreach ($berkas as $d)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $d->no_berkas }} / {{ $d->tahun }}</td>
+                                        <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
@@ -149,7 +149,7 @@
             @method('patch')
             <div class="modal fade" id="model_edit{{ $d->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalEditBerkas" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalEditBerkas">Edit Berkas</h5>
@@ -163,7 +163,7 @@
 
                                 <input type="hidden" name="id" value="{{ $d->id }}">
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Tanggal Input</label>
                                         <input type="date" class="form-control" name="tgl"
@@ -171,7 +171,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                {{-- <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nomor Berkas</label>
                                         <input type="text" class="form-control" name="no_berkas"
@@ -179,15 +179,15 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Tahun</label>
                                         <input type="text" class="form-control" name="tahun"
                                             value="{{ $d->tahun }}" required>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nama Pemohon</label>
                                         <input type="text" class="form-control" name="nm_pemohon"
@@ -195,7 +195,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Kelurahan</label>
                                         <input type="text" class="form-control" name="kelurahan"
@@ -203,7 +203,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nomor WA</label>
                                         <input type="number" class="form-control" name="no_tlp"
@@ -211,7 +211,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Alamat Bidang Tanah</label>
                                         <textarea class="form-control" name="alamat" cols="30" rows="3">{{ $d->alamat }}</textarea>

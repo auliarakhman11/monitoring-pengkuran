@@ -1,35 +1,11 @@
 @extends('template.master')
 @section('content')
-
-    <style>
-        .blink {
-            animation: blink 1.5s linear infinite;
-        }
-
-        @keyframes blink {
-            0% {
-                background-color: rgb(245, 103, 103);
-                color: white;
-            }
-
-            50% {
-                background-color: rgb(252, 197, 96);
-                color: white;
-            }
-
-            100% {
-                background-color: rgb(219, 205, 109);
-                color: white;
-            }
-        }
-    </style>
-
     <div id="main-content">
         <div class="container-fluid">
             <div class="block-header">
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="float-left">SPS Berkas</h2>
+                        <h2 class="float-left">Pengecekan</h2>
 
                         {{-- <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-dashboard"></i></a>
@@ -61,14 +37,13 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Proses</th>
                                     <th>No Sistem</th>
                                     <th>Pemohon</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
-                                    <th>Penjadwalan</th>
                                     <th>No WA</th>
                                     <th>Tanggal<br>Input</th>
+                                    <th>Pengecekan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -77,30 +52,26 @@
                                     $i = 1;
                                 @endphp
                                 @foreach ($berkas as $d)
-                                    <tr class="{{ $d->lama_tgl >= 2 ? 'blink' : '' }}">
+                                    <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $d->proses->nm_proses }}</td>
                                         <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
-                                        <td>
-                                            @if ($d->tgl_pengukuran)
-                                                {{ date('d/m/Y', strtotime($d->tgl_pengukuran)) }}<br>
-                                            @else
-                                                -<br>
-                                            @endif
-                                            @if ($d->pengukuran)
-                                                @foreach ($d->pengukuran as $pe)
-                                                    {{ $pe->petugas->name }}<br>
-                                                @endforeach
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
                                         <td><a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}"
                                                 target="_blank">{{ $d->no_tlp }}</a></td>
                                         <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
+                                        <td>
+                                            @if (count($d->uploadFile) > 0)
+                                                @foreach ($d->uploadFile as $u)
+                                                    <a class="btn_lihat_file" href="#model_lihat_file" data-toggle="modal"
+                                                        file_name="{{ $u->file_name }}"
+                                                        jenis_file="{{ $u->jenis_file }}">{{ $u->nm_file }} <i
+                                                            class="fa fa-check-circle text-success"
+                                                            aria-hidden="true"></i></a> <br>
+                                                @endforeach
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
@@ -108,27 +79,16 @@
                                                     Aksi
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    @if ($d->proses_id == 2)
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('pembayaranSpsBerkas', $d->id) }}"
-                                                            onclick="return confirm('Apakah anda yakin ingin membayar SPS?')"><i
-                                                                class="fa fa-check-circle" aria-hidden="true"></i>
-                                                            Pembayaran SPS</a>
-                                                    @else
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('cetakSpsBerkas', $d->id) }}"
-                                                            onclick="return confirm('Apakah anda yakin ingin mencetak SPS?')"><i
-                                                                class="fa fa-print" aria-hidden="true"></i> Cetak SPS</a>
-                                                    @endif
-
                                                     <a class="dropdown-item" href="#model_edit{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
-                                                    @if ($d->file_name)
+                                                    <a class="dropdown-item" href="#model_upload{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-upload"></i> Upload</a>
+                                                    {{-- @if ($d->file_name)
                                                         <a class="dropdown-item btn_lihat_file" href="#model_lihat_file"
                                                             data-toggle="modal" file_name="{{ $d->file_name }}"
                                                             jenis_file="{{ $d->jenis_file }}"><i class="fa fa-eye"></i>
                                                             Lihat File</a>
-                                                    @endif
+                                                    @endif --}}
                                                     <a class="dropdown-item" href="#model_tutup_berkas{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-times-circle"
                                                             aria-hidden="true"></i> Tutup Berkas</a>
@@ -138,7 +98,32 @@
 
                                                 </div>
                                             </div>
+                                            {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                                data-target="#model_penjadwalan{{ $d->id }}">
+                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                                data-target="#model_edit{{ $d->id }}">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
 
+                                            @if ($d->file_name)
+                                                <button type="button" class="btn btn-sm btn-primary btn_lihat_file"
+                                                    data-toggle="modal" file_name="{{ $d->file_name }}"
+                                                    jenis_file="{{ $d->jenis_file }}" data-target="#model_lihat_file">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            @endif --}}
+
+                                            {{-- <form class="d-inline-block" action="{{ route('dropBerkas') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $d->id }}">
+                                                <button type="submit"
+                                                    onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"
+                                                    class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -241,6 +226,7 @@
             </div>
         </form>
 
+
         <form action="{{ route('tutupBerkas') }}" method="post">
             @csrf
             <div class="modal fade" id="model_tutup_berkas{{ $d->id }}" tabindex="-1" role="dialog"
@@ -272,6 +258,55 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Tutup Berkas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="{{ route('uplaodBerkas') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal fade" id="model_upload{{ $d->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalUploadBerkas" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalUploadBerkas">Upload Berkas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <input type="hidden" name="id" value="{{ $d->id }}">
+
+                            <table class="table table-sm" width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Berkas</td>
+                                        <td>File</td>
+                                        <td>Aksi</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_file{{ $d->id }}">
+                                    <tr>
+                                        <td><input type="text" name="nm_file[]" class="form-control form-control-sm"
+                                                required>
+                                        </td>
+                                        <td><input type="file" name="file_name[]" class="form-control form-control-sm"
+                                                accept="application/pdf, image/png, image/jpeg" required></td>
+                                        <td><button type="button" class="btn btn-sm btn-primary btn_tambah_file"
+                                                berkas_id="{{ $d->id }}"><i class="fa fa-plus"
+                                                    aria-hidden="true"></i></button></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Uplaod File</button>
                         </div>
                     </div>
                 </div>
@@ -347,6 +382,36 @@
                 }
 
             });
+
+            var count_file = 1;
+            $(document).on('click', '.btn_tambah_file', function() {
+                let berkas_id = $(this).attr('berkas_id');
+                count_file = count_file + 1;
+                var html_code = '<tr id="row' + count_file + '">';
+
+                html_code +=
+                    '<td><input type="text" name="nm_file[]" class="form-control form-control-sm" required></td>';
+                html_code +=
+                    '<td><input type="file" name="file_name[]" class="form-control form-control-sm" accept="application/pdf, image/png, image/jpeg" required></td>';
+
+                html_code +=
+                    '<td><button type="button" class="btn btn-sm btn-danger remove_file" data-row="row' +
+                    count_file + '"><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
+
+                html_code += "</tr>";
+
+                $('#table_file' + berkas_id).append(html_code);
+                // $('.select2bs4').select2({
+                //     theme: 'bootstrap4',
+                //     tags: true,
+                // });
+            });
+
+            $(document).on('click', '.remove_file', function() {
+                var delete_row = $(this).data("row");
+                $('#' + delete_row).remove();
+            });
+
 
         });
     </script>

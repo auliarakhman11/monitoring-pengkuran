@@ -46,14 +46,19 @@ Route::middleware('auth')->group(function () {
     //sps
     Route::get('spsBerkas', [BerkasController::class, 'spsBerkas'])->name('spsBerkas');
     Route::get('cetakSpsBerkas/{id}', [BerkasController::class, 'cetakSpsBerkas'])->name('cetakSpsBerkas');
-    Route::get('pembayaranSpsBerkas/{id}', [BerkasController::class,'pembayaranSpsBerkas'])->name('pembayaranSpsBerkas');
-    Route::get('selesaiSpsBerkas', [BerkasController::class,'selesaiSpsBerkas'])->name('selesaiSpsBerkas');
-    
+    Route::get('pembayaranSpsBerkas/{id}', [BerkasController::class, 'pembayaranSpsBerkas'])->name('pembayaranSpsBerkas');
+    Route::get('selesaiSpsBerkas', [BerkasController::class, 'selesaiSpsBerkas'])->name('selesaiSpsBerkas');
+
     //end sps
+
+    //pengecekan
+    Route::get('pengecekan', [BerkasController::class, 'pengecekan'])->name('pengecekan');
+    Route::post('uplaodBerkas', [BerkasController::class, 'uplaodBerkas'])->name('uplaodBerkas');
+    //end pengecekan
 
     //laporan
     Route::get('kalender', [LaporanController::class, 'kalender'])->name('kalender');
-    Route::get('detailPengukuran/{id}', [LaporanController::class,'detailPengukuran'])->name('detailPengukuran');
+    Route::get('detailPengukuran/{id}', [LaporanController::class, 'detailPengukuran'])->name('detailPengukuran');
     //end alaporan
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
