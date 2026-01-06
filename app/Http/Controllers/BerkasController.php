@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class BerkasController extends Controller
 {
     public function loket(Request $request)
@@ -38,14 +41,14 @@ class BerkasController extends Controller
 
         if ($request->hasFile('file_name')) {
             $extension = $request->file('file_name')->extension();
-            $file_name = Str::random(1).Auth::id() . date('ym') . '.' . $extension;
+            $file_name = Str::random(1) . Auth::id() . date('ym') . '.' . $extension;
             $request->file('file_name')->move('file_upload/', $file_name);
         } else {
             $extension = NULL;
             $file_name = NULL;
         }
 
-        $no_sistem = 'SP-' . strtoupper(Str::random(2)). Auth::id() . date('ym');
+        $no_sistem = 'SP-' . strtoupper(Str::random(2)) . Auth::id() . date('ym');
 
         $berkas = Berkas::create([
             'proses_id' => 5,
@@ -234,11 +237,11 @@ class BerkasController extends Controller
     {
 
         if (session()->get('role_id') == 3) {
-            $berkas = Berkas::select('berkas.*')->leftJoin("pengukuran",'berkas.id','=','pengukuran.berkas_id')->where('berkas.proses_id', 3)->where('berkas.void', 0)->where('berkas.tgl_pengukuran', '!=', NULL)->where('petugas_id',Auth::id())->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('berkas.id', 'ASC')->groupBy('berkas.id')->get();
+            $berkas = Berkas::select('berkas.*')->leftJoin("pengukuran", 'berkas.id', '=', 'pengukuran.berkas_id')->where('berkas.proses_id', 3)->where('berkas.void', 0)->where('berkas.tgl_pengukuran', '!=', NULL)->where('petugas_id', Auth::id())->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('berkas.id', 'ASC')->groupBy('berkas.id')->get();
         } else {
             $berkas = Berkas::select('berkas.*')->where('proses_id', 3)->where('void', 0)->where('tgl_pengukuran', '!=', NULL)->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('berkas.id', 'ASC')->get();
         }
-        
+
 
         return view('berkas.selesai_sps_berkas', [
             'title' => 'Penjadwalan',
@@ -322,7 +325,8 @@ class BerkasController extends Controller
         return redirect()->back()->with('success', 'Berkas dilanjutkan');
     }
 
-    public function sudahDiukur($id){
+    public function sudahDiukur($id)
+    {
         Berkas::where('id', $id)->update([
             'proses_id' => 6,
             'user_id' => Auth::id()
@@ -342,4 +346,34 @@ class BerkasController extends Controller
         return redirect()->back()->with('success', 'Bidang sudah diukur');
     }
 
+    public function importDataBerkas(Request $request)
+    {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+        $spreadsheet = $reader->load($_FILES['file_excel']['tmp_name']);
+
+        $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        $numrow = 1;
+
+
+        foreach ($sheet as $row) {
+
+            if ($row['A'] == "" &&  $row['B'] == "" &&  $row['C'] == "" &&  $row['D'] == "" &&  $row['E'] == "" &&  $row['F'] == "" &&  $row['G'] == "" &&  $row['H'] == "")
+                continue;
+
+            // $datetime = DateTime::createFromFormat('Y-m-d', $row['A']);
+            if ($numrow > 1) {
+
+                Berkas::where('kelurahan_id', $row['A'])->where('jenis_hak_id', $row['C'])->where('no_hak', sprintf("%05d", $row['D']))->update([
+                    'jenis_peta_id' => $row['E'],
+                    'no_peta' => $row['F'],
+                    'tahun_peta' => $row['G'],
+                    'nib' => $row['H'],
+                ]);
+            }
+            $numrow++; // Tambah 1 setiap kali looping
+        }
+
+        return redirect(route('import'))->with('success', 'Berkas berhasil diimport');
+    }
 }
