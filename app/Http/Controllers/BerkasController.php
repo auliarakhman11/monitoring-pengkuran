@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class BerkasController extends Controller
 {
@@ -206,19 +207,21 @@ class BerkasController extends Controller
         return redirect()->back()->with('success', 'SPS dicetak');
     }
 
-    public function pembayaranSpsBerkas($id)
+    public function pembayaranSpsBerkas(Request $request)
     {
-        Berkas::where('id', $id)->update([
+        Berkas::where('id', $request->id)->update([
             'proses_id' => 3,
+            'no_berkas' => $request->no_berkas,
+            'tahun' => $request->tahun,
             'user_id' => Auth::id()
         ]);
 
-        History::where('berkas_id', $id)->where('selesai', NULL)->update([
+        History::where('berkas_id', $request->id)->where('selesai', NULL)->update([
             'selesai' => date('Y-m-d H:i:s')
         ]);
 
         History::create([
-            'berkas_id' => $id,
+            'berkas_id' => $request->id,
             'proses_id' => 3,
             'user_id' => Auth::id(),
             'selesai' => date('Y-m-d H:i:s')
@@ -271,5 +274,43 @@ class BerkasController extends Controller
         // }
 
         return redirect()->back()->with('success', 'Berkas berhasil diuplaod');
+    }
+
+    public function deleteBerkas($id)
+    {
+        $file = UploadFile::where('id', $id);
+        $dt_file = $file->first();
+        File::delete('file_upload/' . $dt_file->file_name);
+        $file->delete();
+        return redirect()->back()->with('success', 'File berhasil dihapus');
+    }
+
+    public function kendalaBerkas(Request $request)
+    {
+        Berkas::where('id', $request->id)->update([
+            'kendala' => $request->kendala
+        ]);
+
+        return redirect()->back()->with('success', 'Kendala berhasil diinput');
+    }
+
+    public function lanjutPengecekan($id)
+    {
+        Berkas::where('id', $id)->update([
+            'proses_id' => 1,
+            'user_id' => Auth::id()
+        ]);
+
+        History::where('berkas_id', $id)->where('selesai', NULL)->update([
+            'selesai' => date('Y-m-d H:i:s')
+        ]);
+
+        History::create([
+            'berkas_id' => $id,
+            'proses_id' => 1,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Berkas dilanjutkan');
     }
 }

@@ -44,6 +44,7 @@
                                     <th>No WA</th>
                                     <th>Tanggal<br>Input</th>
                                     <th>Pengecekan</th>
+                                    <th>Kendala</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -58,8 +59,21 @@
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
-                                        <td><a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}"
-                                                target="_blank">{{ $d->no_tlp }}</a></td>
+                                        <td>
+                                            @php
+                                                $text =
+                                                    'Halo%20Yth.%20Pemohon%20Layanan%20Pengukuran%20Pertanahan%20Kabupaten%20Banjar%0A%0A';
+                                                $text .=
+                                                    'Jadwal%20pengukuran%20bidang%20tanah%20Anda%20telah%20ditentukan.%0A';
+                                                $text .=
+                                                    'Silahkan%20melakukan%20pendaftaran%20berkas%20dan%20pembayaran%20SPS%20di%20Loket%20Pendaftaran%20Kantor%20Pertanahan%20Kabupaten%20Banjar%20maksimal%203%20(tiga)%20hari%20kerja%20setelah%20Anda%20menerima%20pesan%20ini.%0A%0A';
+                                                $text .= 'Demikian%20kami%20sampaikan.%20Terima kasih.';
+                                            @endphp
+                                            {{-- <a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}"
+                                                target="_blank">{{ $d->no_tlp }}</a> --}}
+                                            <a href="https://wa.me/62{{ substr($d->no_tlp, 1) }}?text={{ $text }}"
+                                                target="_blank">{{ $d->no_tlp }}</a>
+                                        </td>
                                         <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                         <td>
                                             @if (count($d->uploadFile) > 0)
@@ -72,6 +86,7 @@
                                                 @endforeach
                                             @endif
                                         </td>
+                                        <td>{{ $d->kendala }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
@@ -83,47 +98,27 @@
                                                         data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
                                                     <a class="dropdown-item" href="#model_upload{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-upload"></i> Upload</a>
-                                                    {{-- @if ($d->file_name)
-                                                        <a class="dropdown-item btn_lihat_file" href="#model_lihat_file"
-                                                            data-toggle="modal" file_name="{{ $d->file_name }}"
-                                                            jenis_file="{{ $d->jenis_file }}"><i class="fa fa-eye"></i>
-                                                            Lihat File</a>
-                                                    @endif --}}
+                                                    <a class="dropdown-item" href="#model_kendala{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-info-circle"
+                                                            aria-hidden="true"></i> Kendala</a>
                                                     <a class="dropdown-item" href="#model_tutup_berkas{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-times-circle"
                                                             aria-hidden="true"></i> Tutup Berkas</a>
                                                     <a class="dropdown-item" href="{{ route('dropBerkas', $d->id) }}"
                                                         onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i
                                                             class="fa fa-trash"></i> Hapus</a>
+                                                    @if (count($d->uploadFile) > 0)
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('lanjutPengecekan', $d->id) }}"
+                                                            onclick="return confirm('Apakah anda yakin ingin melanjutkan?')"><i
+                                                                class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                                            Lanjut</a>
+                                                    @endif
+
 
                                                 </div>
                                             </div>
-                                            {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                                data-target="#model_penjadwalan{{ $d->id }}">
-                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                                data-target="#model_edit{{ $d->id }}">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
 
-                                            @if ($d->file_name)
-                                                <button type="button" class="btn btn-sm btn-primary btn_lihat_file"
-                                                    data-toggle="modal" file_name="{{ $d->file_name }}"
-                                                    jenis_file="{{ $d->jenis_file }}" data-target="#model_lihat_file">
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
-                                            @endif --}}
-
-                                            {{-- <form class="d-inline-block" action="{{ route('dropBerkas') }}" method="post">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $d->id }}">
-                                                <button type="submit"
-                                                    onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"
-                                                    class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -280,6 +275,36 @@
 
                             <input type="hidden" name="id" value="{{ $d->id }}">
 
+                            @if (count($d->uploadFile) > 0)
+                                <table class="table table-sm" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>Berkas</td>
+                                            <td>Lihat</td>
+                                            <td>Hapus</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (count($d->uploadFile) > 0)
+                                            @foreach ($d->uploadFile as $u)
+                                                <tr>
+                                                    <td>{{ $u->nm_file }}</td>
+                                                    <td><a class="btn btn-sm btn-primary btn_lihat_file"
+                                                            href="#model_lihat_file" data-toggle="modal"
+                                                            file_name="{{ $u->file_name }}"
+                                                            jenis_file="{{ $u->jenis_file }}"><i class="fa fa-eye"
+                                                                aria-hidden="true"></i></a></td>
+                                                    <td><a href="{{ route('deleteBerkas', $u->id) }}"
+                                                            class="btn btn-sm btn-danger"
+                                                            onclick="return confirm('Apakah anda yakin ingin menghapus file?')"><i
+                                                                class="fa fa-trash"></i></a></td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            @endif
+
                             <table class="table table-sm" width="100%">
                                 <thead>
                                     <tr>
@@ -307,6 +332,44 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Uplaod File</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="{{ route('kendalaBerkas') }}" method="post">
+            @csrf
+            <div class="modal fade" id="model_kendala{{ $d->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalKendala" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalKendala">Kendala Berkas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row">
+
+                                <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="">Kendala</label>
+                                        <input type="text" class="form-control" name="kendala"
+                                            value="{{ $d->kendala }}" placeholder="Masukan kendala..">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>

@@ -73,8 +73,21 @@
                                                 -
                                             @endif
                                         </td>
-                                        <td><a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}"
-                                                target="_blank">{{ $d->no_tlp }}</a></td>
+                                        <td>
+                                            @php
+                                                $text =
+                                                    'Halo%20Yth.%20Pemohon%20Layanan%20Pengukuran%20Pertanahan%20Kabupaten%20Banjar%0A%0A';
+                                                $text .=
+                                                    'Jadwal%20pengukuran%20bidang%20tanah%20Anda%20telah%20ditentukan.%0A';
+                                                $text .=
+                                                    'Silahkan%20melakukan%20pendaftaran%20berkas%20dan%20pembayaran%20SPS%20di%20Loket%20Pendaftaran%20Kantor%20Pertanahan%20Kabupaten%20Banjar%20maksimal%203%20(tiga)%20hari%20kerja%20setelah%20Anda%20menerima%20pesan%20ini.%0A%0A';
+                                                $text .= 'Demikian%20kami%20sampaikan.%20Terima kasih.';
+                                            @endphp
+                                            {{-- <a href="https://api.whatsapp.com/send?phone=62{{ substr($d->no_tlp, 1) }}"
+                                                target="_blank">{{ $d->no_tlp }}</a> --}}
+                                            <a href="https://wa.me/62{{ substr($d->no_tlp, 1) }}?text={{ $text }}"
+                                                target="_blank">{{ $d->no_tlp }}</a>
+                                        </td>
                                         <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                         <td>{{ date('d/m/Y', strtotime($d->updated_at)) }}</td>
                                         {{-- <td>

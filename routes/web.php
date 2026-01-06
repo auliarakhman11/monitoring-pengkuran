@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     //sps
     Route::get('spsBerkas', [BerkasController::class, 'spsBerkas'])->name('spsBerkas');
     Route::get('cetakSpsBerkas/{id}', [BerkasController::class, 'cetakSpsBerkas'])->name('cetakSpsBerkas');
-    Route::get('pembayaranSpsBerkas/{id}', [BerkasController::class, 'pembayaranSpsBerkas'])->name('pembayaranSpsBerkas');
+    Route::post('pembayaranSpsBerkas', [BerkasController::class, 'pembayaranSpsBerkas'])->name('pembayaranSpsBerkas');
     Route::get('selesaiSpsBerkas', [BerkasController::class, 'selesaiSpsBerkas'])->name('selesaiSpsBerkas');
 
     //end sps
@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
     //pengecekan
     Route::get('pengecekan', [BerkasController::class, 'pengecekan'])->name('pengecekan');
     Route::post('uplaodBerkas', [BerkasController::class, 'uplaodBerkas'])->name('uplaodBerkas');
+    Route::get('deleteBerkas/{id}', [BerkasController::class, 'deleteBerkas'])->name('deleteBerkas');
+    Route::post('kendalaBerkas', [BerkasController::class, 'kendalaBerkas'])->name('kendalaBerkas');
+    Route::get('lanjutPengecekan/{id}', [BerkasController::class, 'lanjutPengecekan'])->name('lanjutPengecekan');
     //end pengecekan
 
     //laporan
