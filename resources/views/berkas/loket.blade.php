@@ -340,7 +340,7 @@
             <?php if(session('no_sistem')): ?>
 
             $('#modal_no_sistem').modal('show');
-            $('#no_sistem').html('<?= session('success') ?>');
+            $('#no_sistem').html('<?= session('no_sistem') ?>');
 
             <?php endif; ?>
 

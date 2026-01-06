@@ -114,12 +114,8 @@
                                                             aria-hidden="true"></i> Penjadwalan</a>
                                                     <a class="dropdown-item" href="#model_edit{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
-                                                    @if ($d->file_name)
-                                                        <a class="dropdown-item btn_lihat_file" href="#model_lihat_file"
-                                                            data-toggle="modal" file_name="{{ $d->file_name }}"
-                                                            jenis_file="{{ $d->jenis_file }}"><i class="fa fa-eye"></i>
-                                                            Lihat File</a>
-                                                    @endif
+                                                    <a class="dropdown-item" href="#model_upload{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-upload"></i> Upload</a>
                                                     <a class="dropdown-item" href="#model_kendala{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-info-circle"
                                                             aria-hidden="true"></i> Kendala</a>
@@ -444,6 +440,85 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Tutup Berkas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="{{ route('uplaodBerkas') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal fade" id="model_upload{{ $d->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalUploadBerkas" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalUploadBerkas">Upload Berkas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <input type="hidden" name="id" value="{{ $d->id }}">
+
+                            @if (count($d->uploadFile) > 0)
+                                <table class="table table-sm" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>Berkas</td>
+                                            <td>Lihat</td>
+                                            <td>Hapus</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (count($d->uploadFile) > 0)
+                                            @foreach ($d->uploadFile as $u)
+                                                <tr>
+                                                    <td>{{ $u->nm_file }}</td>
+                                                    <td><a class="btn btn-sm btn-primary btn_lihat_file"
+                                                            href="#model_lihat_file" data-toggle="modal"
+                                                            file_name="{{ $u->file_name }}"
+                                                            jenis_file="{{ $u->jenis_file }}"><i class="fa fa-eye"
+                                                                aria-hidden="true"></i></a></td>
+                                                    <td><a href="{{ route('deleteBerkas', $u->id) }}"
+                                                            class="btn btn-sm btn-danger"
+                                                            onclick="return confirm('Apakah anda yakin ingin menghapus file?')"><i
+                                                                class="fa fa-trash"></i></a></td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            @endif
+
+                            <table class="table table-sm" width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Berkas</td>
+                                        <td>File</td>
+                                        <td>Aksi</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_file{{ $d->id }}">
+                                    <tr>
+                                        <td><input type="text" name="nm_file[]" class="form-control form-control-sm"
+                                                required>
+                                        </td>
+                                        <td><input type="file" name="file_name[]" class="form-control form-control-sm"
+                                                accept="application/pdf, image/png, image/jpeg" required></td>
+                                        <td><button type="button" class="btn btn-sm btn-primary btn_tambah_file"
+                                                berkas_id="{{ $d->id }}"><i class="fa fa-plus"
+                                                    aria-hidden="true"></i></button></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Uplaod File</button>
                         </div>
                     </div>
                 </div>

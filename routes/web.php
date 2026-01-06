@@ -59,9 +59,14 @@ Route::middleware('auth')->group(function () {
     Route::get('lanjutPengecekan/{id}', [BerkasController::class, 'lanjutPengecekan'])->name('lanjutPengecekan');
     //end pengecekan
 
+    //diukur
+    Route::get('sudahDiukur/{id}', [BerkasController::class,'sudahDiukur'])->name('sudahDiukur');
+    //enddiukur
+
     //laporan
     Route::get('kalender', [LaporanController::class, 'kalender'])->name('kalender');
     Route::get('detailPengukuran/{id}', [LaporanController::class, 'detailPengukuran'])->name('detailPengukuran');
+    Route::get('laporanPetugasUkur',[LaporanController::class,'laporanPetugasUkur'])->name('laporanPetugasUkur');
     //end alaporan
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

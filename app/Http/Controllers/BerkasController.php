@@ -38,14 +38,14 @@ class BerkasController extends Controller
 
         if ($request->hasFile('file_name')) {
             $extension = $request->file('file_name')->extension();
-            $file_name = Str::random(5) . date('ymd') . '.' . $extension;
+            $file_name = Str::random(1).Auth::id() . date('ym') . '.' . $extension;
             $request->file('file_name')->move('file_upload/', $file_name);
         } else {
             $extension = NULL;
             $file_name = NULL;
         }
 
-        $no_sistem = 'SP-' . strtoupper(Str::random(5)) . date('Ymd');
+        $no_sistem = 'SP-' . strtoupper(Str::random(2)). Auth::id() . date('ym');
 
         $berkas = Berkas::create([
             'proses_id' => 5,
@@ -232,9 +232,17 @@ class BerkasController extends Controller
 
     public function selesaiSpsBerkas()
     {
+
+        if (session()->get('role_id') == 3) {
+            $berkas = Berkas::select('berkas.*')->leftJoin("pengukuran",'berkas.id','=','pengukuran.berkas_id')->where('berkas.proses_id', 3)->where('berkas.void', 0)->where('berkas.tgl_pengukuran', '!=', NULL)->where('petugas_id',Auth::id())->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('berkas.id', 'ASC')->groupBy('berkas.id')->get();
+        } else {
+            $berkas = Berkas::select('berkas.*')->where('proses_id', 3)->where('void', 0)->where('tgl_pengukuran', '!=', NULL)->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('berkas.id', 'ASC')->get();
+        }
+        
+
         return view('berkas.selesai_sps_berkas', [
             'title' => 'Penjadwalan',
-            'berkas' => Berkas::select('berkas.*')->where('proses_id', 3)->where('void', 0)->where('tgl_pengukuran', '!=', NULL)->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('berkas.id', 'ASC')->get(),
+            'berkas' => $berkas,
         ]);
     }
 
@@ -313,4 +321,25 @@ class BerkasController extends Controller
 
         return redirect()->back()->with('success', 'Berkas dilanjutkan');
     }
+
+    public function sudahDiukur($id){
+        Berkas::where('id', $id)->update([
+            'proses_id' => 6,
+            'user_id' => Auth::id()
+        ]);
+
+        History::where('berkas_id', $id)->where('selesai', NULL)->update([
+            'selesai' => date('Y-m-d H:i:s')
+        ]);
+
+        History::create([
+            'berkas_id' => $id,
+            'proses_id' => 6,
+            'user_id' => Auth::id(),
+            'selesai' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->back()->with('success', 'Bidang sudah diukur');
+    }
+
 }
