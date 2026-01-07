@@ -38,6 +38,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>No Sistem</th>
+                                    <th>No Berkas</th>
                                     <th>Pemohon</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
@@ -57,6 +58,7 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->no_sistem }}</td>
+                                        <td>{{ $d->no_berkas }}/{{ $d->tahun }}</td>
                                         <td>{{ $d->nm_pemohon }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>

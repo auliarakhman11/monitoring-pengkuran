@@ -151,12 +151,18 @@ class BerkasController extends Controller
             'tgl_pengukuran' => $request->tgl_pengukuran
         ]);
 
-        Pengukuran::create([
-            'berkas_id' => $request->id,
-            'petugas_id' => $request->petugas_id,
-            'user_id' => Auth::id(),
-            'void' => 0
-        ]);
+        $cek = Pengukuran::where('petugas_id',$request->petugas_id)->where('berkas_id',$request->id)->first();
+
+        if (!$cek) {
+            Pengukuran::create([
+                'berkas_id' => $request->id,
+                'petugas_id' => $request->petugas_id,
+                'user_id' => Auth::id(),
+                'void' => 0
+            ]);
+        }
+        
+        
 
         return redirect()->back()->with('success', 'Pengkuran berhasil dijadwalkan');
     }
