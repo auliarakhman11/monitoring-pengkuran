@@ -63,6 +63,14 @@
                                         <i class="fa fa-eye"></i>
                                         View
                                     </button>
+                                    @if (session()->get('role_id') != 3)
+                                        <button type="button" class="btn btn-sm btn-primary ml-2 float-right" data-toggle="modal"
+                                            data-target="#modal_add_status">
+                                            <i class="fa fa-plus"></i>
+                                            Status
+                                        </button>
+                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>
@@ -83,8 +91,14 @@
                                                 <td class="text-left">{{ $d['petugas'] }}</td>
                                                 @foreach ($d['dt_tgl'] as $dt)
                                                     <td>
-                                                        @if ($dt['keluar'] == 1)
-                                                            <p>Bussy</p>
+                                                        @if ($dt['status'] == 'Bussy')
+                                                            <span class='badge badge-danger'>Bussy</span>
+                                                        @else
+                                                            @if ($dt['status'] == 'Leave')
+                                                                <span class='badge badge-warning'>Leave</span>
+                                                            @else
+                                                                
+                                                            @endif
                                                         @endif
                                                     </td>
                                                 @endforeach
@@ -148,6 +162,82 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form action="{{ route('addStatusPu') }}" method="post">
+        @csrf
+        <div class="modal fade" id="modal_add_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalStatus"
+        aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalStatus">Status Petugas Ukur</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tanggal</th>
+                                        <th>Petugas</th>
+                                        <th>Status</th>
+                                        <th>Hapus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($list_status as $index => $d)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
+                                            <td>{{ $d->petugas->name }}</td>
+                                            <td>{{ $d->status == 1 ? 'Available' : ($d->status == 2 ? 'Bussy' : 'Leave') }}</td>
+                                            <td><a href="{{ route('dropStatusPu',$d->id) }}" onclick="return confirm('Apakah anda yakin ingin menghapus status?')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="">Tanggal</label>
+                                    <input type="date" name="tgl" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="">Petugas</label>
+                                    <select name="petugas_id" class="form-control" required>
+                                        <option value="">Pilih Petugas</option>
+                                        @foreach ($petugas as $p)
+                                            <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="">Status</label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="1">Available</option>
+                                        <option value="2">Bussy</option>
+                                        <option value="3">Leave</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>

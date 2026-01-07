@@ -346,6 +346,15 @@ class BerkasController extends Controller
         return redirect()->back()->with('success', 'Bidang sudah diukur');
     }
 
+    public function importBerkas()
+    {
+
+        return view('berkas.import_data', [
+            'title' => 'Import',
+            
+        ]);
+    }
+
     public function importDataBerkas(Request $request)
     {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -364,12 +373,56 @@ class BerkasController extends Controller
             // $datetime = DateTime::createFromFormat('Y-m-d', $row['A']);
             if ($numrow > 1) {
 
-                Berkas::where('kelurahan_id', $row['A'])->where('jenis_hak_id', $row['C'])->where('no_hak', sprintf("%05d", $row['D']))->update([
-                    'jenis_peta_id' => $row['E'],
-                    'no_peta' => $row['F'],
-                    'tahun_peta' => $row['G'],
-                    'nib' => $row['H'],
+                $no_sistem = 'SP-' . strtoupper(Str::random(2)) . Auth::id() . date('ym');
+
+                if ($row['O'] == 'Kendala') {
+                    $kendala = $row['P'];
+                } else {
+                    $kendala = NULL;
+                }
+                
+
+                $berkas = Berkas::create([
+                    'proses_id' => 1,
+                    'no_sistem' => $no_sistem,
+                    'kelurahan' => NULL,
+                    'alamat' => NULL,
+                    'nm_pemohon' => $row['I'],
+                    'no_tlp' => NULL,
+                    'tgl' => date('Y-m-d'),
+                    'user_id' => Auth::id(),
+                    'void' => 0,
+                    'kendala' => $kendala,
+                    'no_berkas' => $row['B'],
+                    'tahun' => $row['C']
+                    // 'file_name' => $file_name,
+                    // 'jenis_file' => $extension
                 ]);
+
+                History::create([
+                    'berkas_id' => $berkas->id,
+                    'proses_id' => 5,
+                    'user_id' => Auth::id(),
+                    'selesai' => date('Y-m-d H:i:s')
+                ]);
+
+                History::create([
+                    'berkas_id' => $berkas->id,
+                    'proses_id' => 1,
+                    'user_id' => Auth::id(),
+                    'selesai' => date('Y-m-d H:i:s')
+                ]);
+
+                if ($row['N'] != "") {
+                    Pengukuran::create([
+                        'berkas_id' => $berkas->id,
+                        'petugas_id' => $row['N'],
+                        'user_id' => Auth::id(),
+                        'void' => 0
+                    ]);
+                }
+
+
             }
             $numrow++; // Tambah 1 setiap kali looping
         }

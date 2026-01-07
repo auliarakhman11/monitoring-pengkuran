@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berkas;
 use App\Models\Pengukuran;
+use App\Models\StatusPu;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -65,14 +66,28 @@ class LaporanController extends Controller
 
         $pengukuran = Pengukuran::select('pengukuran.berkas_id','users.name','pengukuran.petugas_id','berkas.tgl_pengukuran')->leftJoin('berkas','pengukuran.berkas_id','=','berkas.id')->leftJoin('users','pengukuran.petugas_id','=','users.id')->where('berkas.void',0)->where('berkas.proses_id','!=',4)->groupBy('berkas.tgl_pengukuran')->groupBy('pengukuran.petugas_id')->get();
 
+        $statusPu = StatusPu::whereMonth('tgl',$bulan)->whereYear('tgl',$tahun)->orderBy('tgl','ASC')->groupBy('tgl')->groupBy('petugas_id')->groupBy('status')->with(['petugas'])->get();
+
         foreach ($petugas_ukur as $p) {
             $dt_tgl = [];
             for ($i = 1; $i <= $int; $i++) {
                 $tanggal = date('Y-m-d', strtotime($tahun.'-'.$bulan.'-'.$i));
                 $dat_pengukuran = $pengukuran->where('tgl_pengukuran',$tanggal)->where('petugas_id',$p->id)->first();
+                $status_1 = $statusPu->where('tgl',$tanggal)->where('petugas_id',$p->id)->where('status',1)->first();
+                $status_2 = $statusPu->where('tgl',$tanggal)->where('petugas_id',$p->id)->where('status',2)->first();
+                $status_3 = $statusPu->where('tgl',$tanggal)->where('petugas_id',$p->id)->where('status',3)->first();
+
+                if ($status_1 || $status_2 || $status_3) {
+                    $status = $status_1 ? '' : ($status_2 ? 'Bussy' : 'Leave') ;
+                }elseif ($dat_pengukuran) {
+                    $status = 'Bussy';
+                }else{
+                    $status = '';
+                }
+
                 $dt_tgl [] = [
                     'tgl' => $tanggal,
-                    'keluar' => $dat_pengukuran ? 1 : 0,
+                    'status' => $status
                 ];
             }
             $dt_pengukuran [] = [
@@ -89,9 +104,27 @@ class LaporanController extends Controller
             'bulan' => $bulan,
             'tahun' => $tahun,
             'tgl' => $tgl,
+            'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
+            'list_status' => StatusPu::whereMonth('tgl',$bulan)->whereYear('tgl',$tahun)->with(['petugas'])->orderBy('tgl','ASC')->get()
         ]);
 
 
+    }
+
+    public function addStatusPu(Request $request){
+        StatusPu::create([
+            'petugas_id' => $request->petugas_id,
+            'tgl' => $request->tgl,
+            'status' => $request->status, 
+        ]);
+
+        return redirect()->back()->with('success', 'Status berhasil diubah');
+
+    }
+
+    public function dropStatusPu($id){
+        StatusPu::where('id',$id)->delete();
+        return redirect()->back()->with('success', 'Status berhasil dihapus');
     }
 
 }

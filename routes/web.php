@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 
     //penjadwalan
     Route::get('penjadwalan', [BerkasController::class, 'penjadwalan'])->name('penjadwalan');
-    Route::post('dropBerkas/{id}', [BerkasController::class, 'dropBerkas'])->name('dropBerkas');
+    Route::get('dropBerkas/{id}', [BerkasController::class, 'dropBerkas'])->name('dropBerkas');
     Route::post('addPengukuranAdmin', [BerkasController::class, 'addPengukuranAdmin'])->name('addPengukuranAdmin');
     Route::get('dropPengkuran/{id}', [BerkasController::class, 'dropPengkuran'])->name('dropPengkuran');
     Route::post('addPengukuranPetugas', [BerkasController::class, 'addPengukuranPetugas'])->name('addPengukuranPetugas');
@@ -67,7 +67,14 @@ Route::middleware('auth')->group(function () {
     Route::get('kalender', [LaporanController::class, 'kalender'])->name('kalender');
     Route::get('detailPengukuran/{id}', [LaporanController::class, 'detailPengukuran'])->name('detailPengukuran');
     Route::get('laporanPetugasUkur',[LaporanController::class,'laporanPetugasUkur'])->name('laporanPetugasUkur');
-    //end alaporan
+    Route::post('addStatusPu', [LaporanController::class,'addStatusPu'])->name('addStatusPu');
+    Route::get('dropStatusPu/{id}', [LaporanController::class,'dropStatusPu'])->name('dropStatusPu');
+    //end laporan
+
+    //import
+    Route::get('importBerkas', [BerkasController::class,'importBerkas'])->name('importBerkas');
+    Route::post('importDataBerkas', [BerkasController::class,'importDataBerkas'])->name('importDataBerkas');
+    //endimport
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 

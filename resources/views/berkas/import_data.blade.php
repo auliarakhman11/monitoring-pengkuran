@@ -6,11 +6,11 @@
                 <div class="row">
                     <div class="col-12">
                         <h2 class="float-left">Home</h2>
-                        {{-- <button type="button" class="btn btn-sm btn-primary float-right ml-2" data-toggle="modal"
+                        <button type="button" class="btn btn-sm btn-primary float-right ml-2" data-toggle="modal"
                             data-target="#add-karyawan">
                             <i class="fa fa-plus-circle"></i>
                             Tambah Karyawan
-                        </button> --}}
+                        </button>
                         {{-- <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-dashboard"></i></a>
                             </li>
@@ -36,7 +36,14 @@
 
             <div class="row justify-content-center clearfix row-deck">
                 <div class="col-12">
-                    
+                    <form action="{{ route('importDataBerkas') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                    <div class="form-group">
+                        <label for="">Import</label>
+                        <input type="file" name="file_excel" class="form-control" required>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                    </form>
                 </div>
 
 
