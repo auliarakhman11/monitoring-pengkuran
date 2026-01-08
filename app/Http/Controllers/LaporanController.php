@@ -91,7 +91,7 @@ class LaporanController extends Controller
                 ];
             }
             $dt_pengukuran [] = [
-                'petugas' => $p->name,
+                'petugas' => strtoupper($p->name),
                 'dt_tgl' => $dt_tgl,
             ];
         }

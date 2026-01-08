@@ -67,6 +67,7 @@ class BerkasController extends Controller
             'kuasa' => $request->kuasa,
             'proses_id' => 5,
             'no_sistem' => $no_sistem,
+            'urutan' => $urutan,
             'kelurahan' => $request->kelurahan,
             'alamat' => $request->alamat,
             'nm_pemohon' => $request->nm_pemohon,
