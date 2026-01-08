@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berkas;
 use App\Models\History;
 use App\Models\Pengukuran;
+use App\Models\Permohonan;
 use App\Models\UploadFile;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,7 +31,8 @@ class BerkasController extends Controller
 
         return view('berkas.loket', [
             'title' => 'Loket',
-            'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->where('tgl', '>=', $tgl1)->where('tgl', '<=', $tgl2)->orderBy('berkas.id', 'DESC')->get(),
+            'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->where('tgl', '>=', $tgl1)->where('tgl', '<=', $tgl2)->orderBy('berkas.id', 'DESC')->with('permohonan')->get(),
+            'permohonan' => Permohonan::all(),
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
         ]);
@@ -48,9 +50,21 @@ class BerkasController extends Controller
             $file_name = NULL;
         }
 
-        $no_sistem = 'SP-' . strtoupper(Str::random(2)) . Auth::id() . date('ym');
+        $dt_urutan = Berkas::whereYear('tgl', date('Y'))->where('urutan', '!=', NULL)->orderBy('urutan', 'DESC')->first();
+
+        if ($dt_urutan) {
+            $urutan = $dt_urutan->urutan + 1;
+        } else {
+            $urutan = 1;
+        }
+
+
+        // $no_sistem = 'SP-' . strtoupper(Str::random(2)) . Auth::id() . date('ym');
+        $no_sistem = 'SP-' . $urutan;
 
         $berkas = Berkas::create([
+            'permohonan_id' => $request->permohonan_id,
+            'kuasa' => $request->kuasa,
             'proses_id' => 5,
             'no_sistem' => $no_sistem,
             'kelurahan' => $request->kelurahan,
@@ -76,11 +90,13 @@ class BerkasController extends Controller
     public function editBerkas(Request $request)
     {
         Berkas::where('id', $request->id)->update([
-            // 'no_berkas' => $request->no_berkas,
-            // 'tahun' => $request->tahun,
+            'permohonan_id' => $request->permohonan_id,
+            'no_berkas' => $request->no_berkas,
+            'tahun' => $request->tahun,
             'kelurahan' => $request->kelurahan,
             'alamat' => $request->alamat,
             'nm_pemohon' => $request->nm_pemohon,
+            'kuasa' => $request->kuasa,
             'no_tlp' => $request->no_tlp,
             'tgl' => $request->tgl,
             'user_id' => Auth::id()
@@ -151,7 +167,7 @@ class BerkasController extends Controller
             'tgl_pengukuran' => $request->tgl_pengukuran
         ]);
 
-        $cek = Pengukuran::where('petugas_id',$request->petugas_id)->where('berkas_id',$request->id)->first();
+        $cek = Pengukuran::where('petugas_id', $request->petugas_id)->where('berkas_id', $request->id)->first();
 
         if (!$cek) {
             Pengukuran::create([
@@ -161,8 +177,8 @@ class BerkasController extends Controller
                 'void' => 0
             ]);
         }
-        
-        
+
+
 
         return redirect()->back()->with('success', 'Pengkuran berhasil dijadwalkan');
     }
@@ -357,7 +373,7 @@ class BerkasController extends Controller
 
         return view('berkas.import_data', [
             'title' => 'Import',
-            
+
         ]);
     }
 
@@ -386,7 +402,7 @@ class BerkasController extends Controller
                 } else {
                     $kendala = NULL;
                 }
-                
+
 
                 $berkas = Berkas::create([
                     'proses_id' => 1,
@@ -427,8 +443,6 @@ class BerkasController extends Controller
                         'void' => 0
                     ]);
                 }
-
-
             }
             $numrow++; // Tambah 1 setiap kali looping
         }

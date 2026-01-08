@@ -42,7 +42,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>No Sistem</th>
-                                    <th>Pemohon</th>
+                                    <th>Permohonan</th>
+                                    <th>Pemohon/ Kuasa</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>No WA</th>
@@ -58,7 +59,8 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->no_sistem }}</td>
-                                        <td>{{ $d->nm_pemohon }}</td>
+                                        <td>{{ $d->permohonan ? $d->permohonan->nm_permohonan : '' }}</td>
+                                        <td>{{ $d->nm_pemohon }}/ {{ $d->kuasa }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>{{ $d->no_tlp }}</td>
@@ -143,6 +145,18 @@
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
+                                    <label for="">Permohonan</label>
+                                    <select name="permohonan_id" class="form-control" required>
+                                        <option value="">Pilih Permohonan</option>
+                                        @foreach ($permohonan as $pr)
+                                            <option value="{{ $pr->id }}">{{ $pr->nm_permohonan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
                                     <label for="">Nama Pemohon</label>
                                     <input type="text" class="form-control" name="nm_pemohon" required>
                                 </div>
@@ -150,15 +164,22 @@
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
+                                    <label for="">Kuasa</label>
+                                    <input type="text" class="form-control" name="kuasa">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
                                     <label for="">Kelurahan/Desa</label>
-                                    <input type="text" class="form-control" name="kelurahan" required>
+                                    <input type="text" class="form-control" name="kelurahan">
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="">Nomor WA</label>
-                                    <input type="number" class="form-control" name="no_tlp" required>
+                                    <input type="number" class="form-control" name="no_tlp">
                                 </div>
                             </div>
 
@@ -218,11 +239,25 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="col-md-6 col-12">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Permohonan</label>
+                                        <select name="permohonan_id" class="form-control">
+                                            <option value="">Pilih Permohonan</option>
+                                            @foreach ($permohonan as $pr)
+                                                <option value="{{ $pr->id }}"
+                                                    {{ $d->permohonan_id == $pr->id ? 'selected' : '' }}>
+                                                    {{ $pr->nm_permohonan }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nomor Berkas</label>
                                         <input type="text" class="form-control" name="no_berkas"
-                                            value="{{ $d->no_berkas }}" required>
+                                            value="{{ $d->no_berkas }}">
                                     </div>
                                 </div>
 
@@ -230,15 +265,23 @@
                                     <div class="form-group">
                                         <label for="">Tahun</label>
                                         <input type="text" class="form-control" name="tahun"
-                                            value="{{ $d->tahun }}" required>
+                                            value="{{ $d->tahun }}">
                                     </div>
-                                </div> --}}
+                                </div>
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nama Pemohon</label>
                                         <input type="text" class="form-control" name="nm_pemohon"
                                             value="{{ $d->nm_pemohon }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Kuasa</label>
+                                        <input type="text" class="form-control" name="kuasa"
+                                            value="{{ $d->kuasa }}">
                                     </div>
                                 </div>
 

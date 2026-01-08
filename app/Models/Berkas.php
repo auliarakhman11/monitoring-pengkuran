@@ -10,7 +10,7 @@ class Berkas extends Model
     use HasFactory;
 
     protected $table = 'berkas';
-    protected $fillable = ['proses_id', 'no_sistem', 'no_berkas', 'tahun', 'kelurahan', 'alamat', 'nm_pemohon', 'no_tlp', 'tgl', 'tgl_pengukuran', 'ket', 'user_id', 'void', 'file_name', 'jenis_file', 'kendala'];
+    protected $fillable = ['proses_id', 'urutan', 'permohonan_id', 'no_sistem', 'no_berkas', 'tahun', 'kelurahan', 'alamat', 'nm_pemohon', 'kuasa', 'no_tlp', 'tgl', 'tgl_pengukuran', 'ket', 'user_id', 'void', 'file_name', 'jenis_file', 'kendala'];
 
     public function user()
     {
@@ -35,5 +35,10 @@ class Berkas extends Model
     public function uploadFile()
     {
         return $this->hasMany(UploadFile::class, 'berkas_id', 'id');
+    }
+
+    public function permohonan()
+    {
+        return $this->belongsTo(Permohonan::class, 'permohonan_id', 'id');
     }
 }
