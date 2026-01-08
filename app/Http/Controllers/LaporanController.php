@@ -78,9 +78,9 @@ class LaporanController extends Controller
                 $status_3 = $statusPu->where('tgl',$tanggal)->where('petugas_id',$p->id)->where('status',3)->first();
 
                 if ($status_1 || $status_2 || $status_3) {
-                    $status = $status_1 ? '' : ($status_2 ? 'Bussy' : 'Leave') ;
+                    $status = $status_1 ? '' : ($status_2 ? 'Sibuk' : 'Cuti') ;
                 }elseif ($dat_pengukuran) {
-                    $status = 'Bussy';
+                    $status = 'Sibuk';
                 }else{
                     $status = '';
                 }

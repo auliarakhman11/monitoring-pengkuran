@@ -91,11 +91,11 @@
                                                 <td class="text-left">{{ $d['petugas'] }}</td>
                                                 @foreach ($d['dt_tgl'] as $dt)
                                                     <td>
-                                                        @if ($dt['status'] == 'Bussy')
-                                                            <span class='badge badge-danger'>Bussy</span>
+                                                        @if ($dt['status'] == 'Sibuk')
+                                                            <span class='badge badge-danger'>Sibuk</span>
                                                         @else
-                                                            @if ($dt['status'] == 'Leave')
-                                                                <span class='badge badge-warning'>Leave</span>
+                                                            @if ($dt['status'] == 'Cuti')
+                                                                <span class='badge badge-warning'>Cuti</span>
                                                             @else
                                                                 
                                                             @endif
@@ -198,7 +198,7 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                             <td>{{ $d->petugas->name }}</td>
-                                            <td>{{ $d->status == 1 ? 'Available' : ($d->status == 2 ? 'Bussy' : 'Leave') }}</td>
+                                            <td>{{ $d->status == 1 ? 'Tersedia' : ($d->status == 2 ? 'Sibuk' : 'Cuti') }}</td>
                                             <td><a href="{{ route('dropStatusPu',$d->id) }}" onclick="return confirm('Apakah anda yakin ingin menghapus status?')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
                                         </tr>
                                     @endforeach
@@ -227,9 +227,9 @@
                                 <div class="form-group">
                                     <label for="">Status</label>
                                     <select name="status" class="form-control" required>
-                                        <option value="1">Available</option>
-                                        <option value="2">Bussy</option>
-                                        <option value="3">Leave</option>
+                                        <option value="1">Tersedia</option>
+                                        <option value="2">Sibuk</option>
+                                        <option value="3">Cuti</option>
                                     </select>
                                 </div>
                             </div>
