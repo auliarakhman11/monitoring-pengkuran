@@ -278,6 +278,7 @@ class BerkasController extends Controller
         return view('berkas.pengecekan', [
             'title' => 'Pengecekan',
             'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->with(['uploadFile'])->orderBy('berkas.id', 'ASC')->get(),
+            'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
         ]);
     }
 

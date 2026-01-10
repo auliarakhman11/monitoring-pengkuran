@@ -108,11 +108,18 @@
                                                         onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i
                                                             class="fa fa-trash"></i> Hapus</a>
                                                     @if (count($d->uploadFile) > 0)
-                                                        <a class="dropdown-item"
+                                                        {{-- <a class="dropdown-item"
                                                             href="{{ route('lanjutPengecekan', $d->id) }}"
                                                             onclick="return confirm('Apakah anda yakin ingin melanjutkan?')"><i
                                                                 class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                                            Lanjut</a> --}}
+
+                                                        <a class="dropdown-item"
+                                                            href="#model_penjadwalan{{ $d->id }}" data-toggle="modal"><i
+                                                                class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                                                             Lanjut</a>
+
+                                                            
                                                     @endif
 
 
@@ -375,6 +382,102 @@
                 </div>
             </div>
         </form>
+
+        <form action="{{ route('addPengukuranAdmin') }}" method="post">
+                @csrf
+                <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalPenjadwalan" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalPenjadwalan">Penjadwalan Oleh Admin</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+
+                                    <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Pengukuran</label>
+                                            <input type="date" class="form-control" name="tgl_pengukuran"
+                                                value="{{ $d->tgl_pengukuran }}">
+                                        </div>
+                                    </div>
+
+                                    @if (count($d->pengukuran) > 0)
+                                        {{-- @foreach ($d->pengukuran as $p)
+                                            <div class="col-12">
+
+                                                <div class="fancy-checkbox">
+                                                    <label><input type="checkbox" value="{{ $p->id }}"><span>{{ $p->petugas->name }}</span></label>
+                                                </div>
+                                            </div>
+                                        @endforeach --}}
+
+
+                                        <table class="table tabel-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Petugas</th>
+                                                    <th>Hapus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($d->pengukuran as $p)
+                                                    <tr>
+                                                        <td>{{ $p->petugas->name }}</td>
+                                                        <td><a href="{{ route('dropPengkuran', $p->id) }}"
+                                                                class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Apakah anda yakin ingin menghapus data?')"><i
+                                                                    class="fa fa-trash"></i></a></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+
+                                </div>
+
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Petugas Ukur</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_petugas{{ $d->id }}">
+                                        <tr>
+                                            <td>
+                                                <select name="petugas_id[]" class="form-control">
+                                                    <option value="">Pilih Petugas</option>
+                                                    @foreach ($petugas as $pt)
+                                                        <option value="{{ $pt->id }}">{{ $pt->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-primary btn_tambah_petugas"
+                                                    pengukuran_id="{{ $d->id }}"><i class="fa fa-plus"
+                                                        aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
     @endforeach
 
     <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLihatFile"
@@ -471,6 +574,34 @@
             });
 
             $(document).on('click', '.remove_file', function() {
+                var delete_row = $(this).data("row");
+                $('#' + delete_row).remove();
+            });
+
+
+            var count_petugas = 1;
+            $(document).on('click', '.btn_tambah_petugas', function() {
+                let pengukuran_id = $(this).attr('pengukuran_id');
+                count_petugas = count_petugas + 1;
+                var html_code = '<tr id="row' + count_petugas + '">';
+
+                html_code +=
+                    '<td><select name="petugas_id[]" class="form-control" required><option value="">Pilih Petugas</option>@foreach ($petugas as $pt)<option value="{{ $pt->id }}">{{ $pt->name }}</option>@endforeach</select></td>';
+
+                html_code +=
+                    '<td><button type="button" class="btn btn-sm btn-danger remove_petugas" data-row="row' +
+                    count_petugas + '"><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
+
+                html_code += "</tr>";
+
+                $('#table_petugas' + pengukuran_id).append(html_code);
+                // $('.select2bs4').select2({
+                //     theme: 'bootstrap4',
+                //     tags: true,
+                // });
+            });
+
+            $(document).on('click', '.remove_petugas', function() {
                 var delete_row = $(this).data("row");
                 $('#' + delete_row).remove();
             });
