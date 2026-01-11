@@ -43,7 +43,7 @@
                                     <th>#</th>
                                     <th>No Sistem</th>
                                     <th>Permohonan</th>
-                                    <th>Pemohon/ Kuasa</th>
+                                    <th>Pemohon/<br>Kuasa</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>No WA</th>

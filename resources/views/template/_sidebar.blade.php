@@ -50,7 +50,7 @@
             <div class="tab-pane active" id="menu">
                 <nav id="left-sidebar-nav" class="sidebar-nav">
                     <ul id="main-menu" class="metismenu li_animation_delay">
-                        <li class="{{ Request::is(['/', 'kalender','laporanPetugasUkur']) ? 'active' : '' }}">
+                        <li class="{{ Request::is(['/', 'kalender', 'laporanPetugasUkur']) ? 'active' : '' }}">
                             <a href="javascript:void(0)" class="has-arrow"><i
                                     class="fa fa-dashboard"></i><span>Laporan</span></a>
                             <ul>
@@ -60,6 +60,9 @@
                                         href="{{ route('kalender') }}">Kalender</a></li>
                                 <li class="{{ Request::is('laporanPetugasUkur') ? 'active' : '' }}"><a
                                         href="{{ route('laporanPetugasUkur') }}">Laporan Petugas ukur</a></li>
+                                <li class="{{ Request::is('laporanKendala') ? 'active' : '' }}"><a
+                                        href="{{ route('laporanKendala') }}">Laporan Berkas Kendala</a></li>
+
                             </ul>
                         </li>
 

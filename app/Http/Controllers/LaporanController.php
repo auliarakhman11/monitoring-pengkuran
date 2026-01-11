@@ -134,4 +134,12 @@ class LaporanController extends Controller
         StatusPu::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Status berhasil dihapus');
     }
+
+    public function laporanKendala()
+    {
+        return view('laporan.laporan_kendala', [
+            'title' => 'Laporan Berkas Kendala',
+            'berkas' => Berkas::where('void', 0)->where('kendala', '!=', NULL)->where('proses_id', '!=', 6)->with(['uploadFile'])->get(),
+        ]);
+    }
 }

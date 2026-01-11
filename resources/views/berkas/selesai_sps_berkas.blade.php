@@ -39,7 +39,7 @@
                                     <th>#</th>
                                     <th>No Sistem</th>
                                     <th>Berkas</th>
-                                    <th>Pemohon</th>
+                                    <th>Pemohon/<br>Kuasa</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>Penjadwalan</th>
@@ -59,7 +59,7 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->no_berkas }}/{{ $d->tahun }}</td>
-                                        <td>{{ $d->nm_pemohon }}</td>
+                                        <td>{{ $d->nm_pemohon }}<br>{{ $d->kuasa }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>
@@ -123,11 +123,13 @@
                                                         onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i
                                                             class="fa fa-trash"></i> Hapus</a>
                                                     <a class="dropdown-item" href="{{ route('sudahDiukur', $d->id) }}"
-                                                        onclick="return confirm('Apakah bidang sudah diukur?')"><i class="fa fa-check-circle" aria-hidden="true"></i> Sudah Diukur</a>
+                                                        onclick="return confirm('Apakah bidang sudah diukur?')"><i
+                                                            class="fa fa-check-circle" aria-hidden="true"></i> Sudah
+                                                        Diukur</a>
 
                                                 </div>
                                             </div>
-                                            
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -305,8 +307,6 @@
                 </div>
             </div>
         </form>
-
-        
     @endforeach
 
     <div class="modal fade" id="model_lihat_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLihatFile"

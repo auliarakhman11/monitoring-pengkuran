@@ -63,7 +63,8 @@
                                     <th>#</th>
                                     <th>Proses</th>
                                     <th>No Sistem</th>
-                                    <th>Pemohon</th>
+                                    <th>Berkas</th>
+                                    <th>Pemohon/<br>Kuasa</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>Penjadwalan</th>
@@ -83,7 +84,8 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->proses->nm_proses }}</td>
                                         <td>{{ $d->no_sistem }}</td>
-                                        <td>{{ $d->nm_pemohon }}</td>
+                                        <td>{{ $d->no_berkas }}/{{ $d->tahun }}</td>
+                                        <td>{{ $d->nm_pemohon }}<br>{{ $d->kuasa }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>
