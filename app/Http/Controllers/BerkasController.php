@@ -451,4 +451,50 @@ class BerkasController extends Controller
 
         return redirect(route('import'))->with('success', 'Berkas berhasil diimport');
     }
+
+
+    public function addPengecekanPetugas(Request $request)
+    {
+        if ($request->tgl_pengukuran != '' || $request->tgl_pengukuran != NULL) {
+            Berkas::where('id', $request->id)->update([
+                'tgl_pengukuran' => $request->tgl_pengukuran
+            ]);
+        }
+
+
+
+        $petugas_id = $request->petugas_id;
+
+        if (count($petugas_id) > 0) {
+
+            for ($count = 0; $count < count($petugas_id); $count++) {
+                if ($petugas_id[$count] == '') {
+                    continue;
+                }
+                Pengukuran::create([
+                    'berkas_id' => $request->id,
+                    'petugas_id' => $petugas_id[$count],
+                    'user_id' => Auth::id(),
+                    'void' => 0
+                ]);
+            }
+        }
+
+        Berkas::where('id', $request->id)->update([
+            'proses_id' => 1,
+            'user_id' => Auth::id()
+        ]);
+
+        History::where('berkas_id', $request->id)->where('selesai', NULL)->update([
+            'selesai' => date('Y-m-d H:i:s')
+        ]);
+
+        History::create([
+            'berkas_id' => $request->id,
+            'proses_id' => 1,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Berkas dilanjutkan');
+    }
 }

@@ -57,23 +57,24 @@ Route::middleware('auth')->group(function () {
     Route::get('deleteBerkas/{id}', [BerkasController::class, 'deleteBerkas'])->name('deleteBerkas');
     Route::post('kendalaBerkas', [BerkasController::class, 'kendalaBerkas'])->name('kendalaBerkas');
     Route::get('lanjutPengecekan/{id}', [BerkasController::class, 'lanjutPengecekan'])->name('lanjutPengecekan');
+    Route::post('addPengecekanPetugas', [BerkasController::class, 'addPengecekanPetugas'])->name('addPengecekanPetugas');
     //end pengecekan
 
     //diukur
-    Route::get('sudahDiukur/{id}', [BerkasController::class,'sudahDiukur'])->name('sudahDiukur');
+    Route::get('sudahDiukur/{id}', [BerkasController::class, 'sudahDiukur'])->name('sudahDiukur');
     //enddiukur
 
     //laporan
     Route::get('kalender', [LaporanController::class, 'kalender'])->name('kalender');
     Route::get('detailPengukuran/{id}', [LaporanController::class, 'detailPengukuran'])->name('detailPengukuran');
-    Route::get('laporanPetugasUkur',[LaporanController::class,'laporanPetugasUkur'])->name('laporanPetugasUkur');
-    Route::post('addStatusPu', [LaporanController::class,'addStatusPu'])->name('addStatusPu');
-    Route::get('dropStatusPu/{id}', [LaporanController::class,'dropStatusPu'])->name('dropStatusPu');
+    Route::get('laporanPetugasUkur', [LaporanController::class, 'laporanPetugasUkur'])->name('laporanPetugasUkur');
+    Route::post('addStatusPu', [LaporanController::class, 'addStatusPu'])->name('addStatusPu');
+    Route::get('dropStatusPu/{id}', [LaporanController::class, 'dropStatusPu'])->name('dropStatusPu');
     //end laporan
 
     //import
-    Route::get('importBerkas', [BerkasController::class,'importBerkas'])->name('importBerkas');
-    Route::post('importDataBerkas', [BerkasController::class,'importDataBerkas'])->name('importDataBerkas');
+    Route::get('importBerkas', [BerkasController::class, 'importBerkas'])->name('importBerkas');
+    Route::post('importDataBerkas', [BerkasController::class, 'importDataBerkas'])->name('importDataBerkas');
     //endimport
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

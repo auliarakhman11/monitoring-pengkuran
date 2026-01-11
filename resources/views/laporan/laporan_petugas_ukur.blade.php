@@ -55,22 +55,22 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6">
-                                    <p class="float-left">Periode :  {{ date('M Y', strtotime($tgl)) }}</p>
+                                    <p class="float-left">Periode : {{ date('M Y', strtotime($tgl)) }}</p>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-sm btn-primary ml-2 float-right" data-toggle="modal"
-                                        data-target="#modal_view">
+                                    <button type="button" class="btn btn-sm btn-primary ml-2 float-right"
+                                        data-toggle="modal" data-target="#modal_view">
                                         <i class="fa fa-eye"></i>
                                         View
                                     </button>
                                     @if (session()->get('role_id') != 3)
-                                        <button type="button" class="btn btn-sm btn-primary ml-2 float-right" data-toggle="modal"
-                                            data-target="#modal_add_status">
+                                        <button type="button" class="btn btn-sm btn-primary ml-2 float-right"
+                                            data-toggle="modal" data-target="#modal_add_status">
                                             <i class="fa fa-plus"></i>
                                             Status
                                         </button>
                                     @endif
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,12 @@
                                                             @if ($dt['status'] == 'Cuti')
                                                                 <span class='badge badge-warning'>Cuti</span>
                                                             @else
-                                                                
+                                                                @if ($dt['status'] == 'Minggu')
+                                                                    <span class='badge bg-danger text-light'>Minggu</span>
+                                                                @else
+                                                                    <p class="text-success" style="font-size: 10px;">
+                                                                        TERSEDIA</p>
+                                                                @endif
                                                             @endif
                                                         @endif
                                                     </td>
@@ -121,7 +126,7 @@
 
     <form action="" method="get">
         <div class="modal fade" id="modal_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalView"
-        aria-hidden="true">
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -154,7 +159,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="">Tahun</label>
-                                    <input type="number" name="tahun" class="form-control" value="{{ $tahun }}" required>
+                                    <input type="number" name="tahun" class="form-control" value="{{ $tahun }}"
+                                        required>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +177,7 @@
     <form action="{{ route('addStatusPu') }}" method="post">
         @csrf
         <div class="modal fade" id="modal_add_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalStatus"
-        aria-hidden="true">
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -198,8 +204,11 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ date('d/m/Y', strtotime($d->tgl)) }}</td>
                                             <td>{{ $d->petugas->name }}</td>
-                                            <td>{{ $d->status == 1 ? 'Tersedia' : ($d->status == 2 ? 'Sibuk' : 'Cuti') }}</td>
-                                            <td><a href="{{ route('dropStatusPu',$d->id) }}" onclick="return confirm('Apakah anda yakin ingin menghapus status?')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                                            <td>{{ $d->status == 1 ? 'Tersedia' : ($d->status == 2 ? 'Sibuk' : 'Cuti') }}
+                                            </td>
+                                            <td><a href="{{ route('dropStatusPu', $d->id) }}"
+                                                    onclick="return confirm('Apakah anda yakin ingin menghapus status?')"
+                                                    class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -247,7 +256,6 @@
 
 
 @section('script')
-    
     <script>
         $(document).ready(function() {
 
@@ -273,7 +281,7 @@
             @endforeach
             <?php endif; ?>
 
-            
+
 
         });
     </script>
