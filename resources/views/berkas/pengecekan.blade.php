@@ -41,6 +41,7 @@
                                     <th>Pemohon/<br>Kuasa</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
+                                    <th>Rencana<br>Penjadwalan</th>
                                     <th>No WA</th>
                                     <th>Tanggal<br>Input</th>
                                     <th>Pengecekan</th>
@@ -59,6 +60,20 @@
                                         <td>{{ $d->nm_pemohon }}/<br>{{ $d->kuasa }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
+                                        <td>
+                                            @if ($d->tgl_pengukuran)
+                                                {{ date('d/m/Y', strtotime($d->tgl_pengukuran)) }}<br>
+                                            @else
+                                                -<br>
+                                            @endif
+                                            @if ($d->pengukuran)
+                                                @foreach ($d->pengukuran as $pe)
+                                                    {{ $pe->petugas->name }}<br>
+                                                @endforeach
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             @php
                                                 $text =
@@ -94,6 +109,9 @@
                                                     Aksi
                                                 </button>
                                                 <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#model_penjadwalan{{ $d->id }}"
+                                                        data-toggle="modal"><i class="fa fa-calendar-check-o"
+                                                            aria-hidden="true"></i> Rencana Penjadwalan</a>
                                                     <a class="dropdown-item" href="#model_edit{{ $d->id }}"
                                                         data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
                                                     <a class="dropdown-item" href="#model_upload{{ $d->id }}"
@@ -107,18 +125,18 @@
                                                     <a class="dropdown-item" href="{{ route('dropBerkas', $d->id) }}"
                                                         onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i
                                                             class="fa fa-trash"></i> Hapus</a>
-                                                    @if (count($d->uploadFile) > 0)
-                                                        {{-- <a class="dropdown-item"
+                                                    @if (count($d->uploadFile) > 0 && $d->tgl_pengukuran != NULL)
+                                                        <a class="dropdown-item"
                                                             href="{{ route('lanjutPengecekan', $d->id) }}"
                                                             onclick="return confirm('Apakah anda yakin ingin melanjutkan?')"><i
                                                                 class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                                            Lanjut</a> --}}
+                                                            Lanjut</a>
 
-                                                        <a class="dropdown-item"
-                                                            href="#model_penjadwalan{{ $d->id }}"
+                                                        {{-- <a class="dropdown-item"
+                                                            href="#model_penjadwalan2{{ $d->id }}"
                                                             data-toggle="modal"><i class="fa fa-arrow-circle-right"
                                                                 aria-hidden="true"></i>
-                                                            Lanjut</a>
+                                                            Lanjut</a> --}}
                                                     @endif
 
 
@@ -141,6 +159,185 @@
     </div>
 
     @foreach ($berkas as $d)
+
+    @if (session()->get('role_id') == 3)
+            <form action="{{ route('addPengukuranPetugas') }}" method="post">
+                @csrf
+                <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalPenjadwalan" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalPenjadwalan">Penjadwalan Oleh Petugas</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+
+                                    <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Pengukuran</label>
+                                            <input type="date" class="form-control" name="tgl_pengukuran"
+                                                value="{{ $d->tgl_pengukuran }}" required>
+                                        </div>
+                                    </div>
+
+                                    @if (count($d->pengukuran) > 0)
+                                        {{-- @foreach ($d->pengukuran as $p)
+                                            <div class="col-12">
+
+                                                <div class="fancy-checkbox">
+                                                    <label><input type="checkbox" value="{{ $p->id }}"><span>{{ $p->petugas->name }}</span></label>
+                                                </div>
+                                            </div>
+                                        @endforeach --}}
+
+
+                                        <table class="table tabel-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Petugas</th>
+                                                    <th>Hapus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($d->pengukuran as $p)
+                                                    <tr>
+                                                        <td>{{ $p->petugas->name }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+
+                                    <div class="col-8">
+                                        <p><b>{{ session()->get('name') }}</b></p>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="hidden" name="petugas_id" value="{{ Auth::id() }}">
+                                        <button type="submit" onclick="return confirm('Apakah anda yakin?')"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pilih Jadwal
+                                        </button>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                {{-- <button type="submit" class="btn btn-primary">Simpan</button> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        @else
+            <form action="{{ route('addPengukuranAdmin') }}" method="post">
+                @csrf
+                <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalPenjadwalan" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalPenjadwalan">Rencana Petugas Ukur</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+
+                                    <input type="hidden" name="id" value="{{ $d->id }}">
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Pengukuran</label>
+                                            <input type="date" class="form-control" name="tgl_pengukuran"
+                                                value="{{ $d->tgl_pengukuran }}" required>
+                                        </div>
+                                    </div>
+
+                                    @if (count($d->pengukuran) > 0)
+                                        {{-- @foreach ($d->pengukuran as $p)
+                                            <div class="col-12">
+
+                                                <div class="fancy-checkbox">
+                                                    <label><input type="checkbox" value="{{ $p->id }}"><span>{{ $p->petugas->name }}</span></label>
+                                                </div>
+                                            </div>
+                                        @endforeach --}}
+
+
+                                        <table class="table tabel-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Petugas</th>
+                                                    <th>Hapus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($d->pengukuran as $p)
+                                                    <tr>
+                                                        <td>{{ $p->petugas->name }}</td>
+                                                        <td><a href="{{ route('dropPengkuran', $p->id) }}"
+                                                                class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Apakah anda yakin ingin menghapus data?')"><i
+                                                                    class="fa fa-trash"></i></a></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+
+                                </div>
+
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Petugas Ukur</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_petugas{{ $d->id }}">
+                                        <tr>
+                                            <td>
+                                                <select name="petugas_id[]" class="form-control">
+                                                    <option value="">Pilih Petugas</option>
+                                                    @foreach ($petugas as $pt)
+                                                        <option value="{{ $pt->id }}">{{ $pt->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-primary btn_tambah_petugas"
+                                                    pengukuran_id="{{ $d->id }}"><i class="fa fa-plus"
+                                                        aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        @endif
+
         <form action="{{ route('editBerkas') }}" method="post">
             @csrf
             @method('patch')
@@ -392,7 +589,7 @@
 
         <form action="{{ route('addPengecekanPetugas') }}" method="post">
             @csrf
-            <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="model_penjadwalan2{{ $d->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalPenjadwalan" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
