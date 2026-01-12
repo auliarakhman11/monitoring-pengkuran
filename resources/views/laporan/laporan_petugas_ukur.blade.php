@@ -97,8 +97,8 @@
                                                             @if ($dt['status'] == 'Cuti')
                                                                 <span class='badge badge-warning'>Cuti</span>
                                                             @else
-                                                                @if ($dt['status'] == 'Minggu')
-                                                                    <span class='badge bg-danger text-light'>Minggu</span>
+                                                                @if ($dt['status'] == 'Minggu' || $dt['status'] == 'Sabtu')
+                                                                    <span class='badge bg-danger text-light'>{{ $dt['status'] }}</span>
                                                                 @else
                                                                     <p class="text-success" style="font-size: 10px;">
                                                                         TERSEDIA</p>

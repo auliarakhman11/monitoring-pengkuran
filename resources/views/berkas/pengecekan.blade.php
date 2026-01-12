@@ -412,7 +412,7 @@
                                     <div class="form-group">
                                         <label for="">Tanggal Pengukuran</label>
                                         <input type="date" class="form-control" name="tgl_pengukuran"
-                                            value="{{ $d->tgl_pengukuran }}">
+                                            value="{{ $d->tgl_pengukuran }}" required>
                                     </div>
                                 </div>
 
@@ -460,7 +460,7 @@
                                 <tbody id="table_petugas{{ $d->id }}">
                                     <tr>
                                         <td>
-                                            <select name="petugas_id[]" class="form-control">
+                                            <select name="petugas_id[]" class="form-control" required>
                                                 <option value="">Pilih Petugas</option>
                                                 @foreach ($petugas as $pt)
                                                     <option value="{{ $pt->id }}">{{ $pt->name }}</option>

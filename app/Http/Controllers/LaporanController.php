@@ -89,6 +89,8 @@ class LaporanController extends Controller
 
                     if (date('D', strtotime($tahun . '-' . $bulan . '-' . $i)) == 'Sun') {
                         $status = 'Minggu';
+                    }elseif(date('D', strtotime($tahun . '-' . $bulan . '-' . $i)) == 'Sat'){
+                        $status = 'Sabtu';
                     } else {
                         $status = '';
                     }
