@@ -125,7 +125,7 @@
                                                     <a class="dropdown-item" href="{{ route('dropBerkas', $d->id) }}"
                                                         onclick="return confirm('Apakah anda yakin ingin menghapus berkas?')"><i
                                                             class="fa fa-trash"></i> Hapus</a>
-                                                    @if (count($d->uploadFile) > 0 && $d->tgl_pengukuran != NULL)
+                                                    @if (count($d->uploadFile) > 0 && count($d->pengukuran) > 0)
                                                         <a class="dropdown-item"
                                                             href="{{ route('lanjutPengecekan', $d->id) }}"
                                                             onclick="return confirm('Apakah anda yakin ingin melanjutkan?')"><i
@@ -159,8 +159,7 @@
     </div>
 
     @foreach ($berkas as $d)
-
-    @if (session()->get('role_id') == 3)
+        @if (session()->get('role_id') == 3)
             <form action="{{ route('addPengukuranPetugas') }}" method="post">
                 @csrf
                 <div class="modal fade" id="model_penjadwalan{{ $d->id }}" tabindex="-1" role="dialog"
@@ -179,13 +178,13 @@
 
                                     <input type="hidden" name="id" value="{{ $d->id }}">
 
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <div class="form-group">
                                             <label for="">Tanggal Pengukuran</label>
                                             <input type="date" class="form-control" name="tgl_pengukuran"
-                                                value="{{ $d->tgl_pengukuran }}" required>
+                                                value="{{ $d->tgl_pengukuran }}">
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     @if (count($d->pengukuran) > 0)
                                         {{-- @foreach ($d->pengukuran as $p)
@@ -259,13 +258,13 @@
 
                                     <input type="hidden" name="id" value="{{ $d->id }}">
 
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <div class="form-group">
                                             <label for="">Tanggal Pengukuran</label>
                                             <input type="date" class="form-control" name="tgl_pengukuran"
-                                                value="{{ $d->tgl_pengukuran }}" required>
+                                                value="{{ $d->tgl_pengukuran }}">
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     @if (count($d->pengukuran) > 0)
                                         {{-- @foreach ($d->pengukuran as $p)
@@ -605,13 +604,13 @@
 
                                 <input type="hidden" name="id" value="{{ $d->id }}">
 
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="form-group">
                                         <label for="">Tanggal Pengukuran</label>
                                         <input type="date" class="form-control" name="tgl_pengukuran"
                                             value="{{ $d->tgl_pengukuran }}" required>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 @if (count($d->pengukuran) > 0)
                                     {{-- @foreach ($d->pengukuran as $p)
