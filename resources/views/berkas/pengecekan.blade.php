@@ -39,6 +39,7 @@
                                     <th>#</th>
                                     <th>No Sistem</th>
                                     <th>Pemohon/<br>Kuasa</th>
+                                    <th>Jumlah<br>Bidang</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>Rencana<br>Penjadwalan</th>
@@ -58,6 +59,7 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->nm_pemohon }}/<br>{{ $d->kuasa }}</td>
+                                        <td>{{ $d->jml_bidang > 0 ? $d->jml_bidang . ' Bidang' : '-' }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>
@@ -393,6 +395,14 @@
                                         <label for="">Kuasa</label>
                                         <input type="text" class="form-control" name="kuasa"
                                             value="{{ $d->kuasa }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Jumlah Bidang</label>
+                                        <input type="number" class="form-control" name="jml_bidang"
+                                            value="{{ $d->jml_bidang }}">
                                     </div>
                                 </div>
 

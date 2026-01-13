@@ -44,6 +44,7 @@
                                     <th>No Sistem</th>
                                     <th>Permohonan</th>
                                     <th>Pemohon/<br>Kuasa</th>
+                                    <th>Jumlah<br>Bidang</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>No WA</th>
@@ -61,6 +62,7 @@
                                         <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->permohonan ? $d->permohonan->nm_permohonan : '' }}</td>
                                         <td>{{ $d->nm_pemohon }}/ {{ $d->kuasa }}</td>
+                                        <td>{{ $d->jml_bidang > 0 ? $d->jml_bidang . ' Bidang' : '-' }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>{{ $d->no_tlp }}</td>
@@ -166,6 +168,13 @@
                                 <div class="form-group">
                                     <label for="">Kuasa</label>
                                     <input type="text" class="form-control" name="kuasa">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="">Jumlah Bidang</label>
+                                    <input type="number" class="form-control" name="jml_bidang">
                                 </div>
                             </div>
 
@@ -282,6 +291,14 @@
                                         <label for="">Kuasa</label>
                                         <input type="text" class="form-control" name="kuasa"
                                             value="{{ $d->kuasa }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Jumlah Bidang</label>
+                                        <input type="number" class="form-control" name="jml_bidang"
+                                            value="{{ $d->jml_bidang }}">
                                     </div>
                                 </div>
 

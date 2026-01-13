@@ -9,17 +9,17 @@
         @keyframes blink {
             0% {
                 background-color: rgb(245, 103, 103);
-                color: white;
+                color: black;
             }
 
             50% {
                 background-color: rgb(252, 197, 96);
-                color: white;
+                color: black;
             }
 
             100% {
                 background-color: rgb(219, 205, 109);
-                color: white;
+                color: black;
             }
         }
     </style>
@@ -65,6 +65,7 @@
                                     <th>No Sistem</th>
                                     <th>Berkas</th>
                                     <th>Pemohon/<br>Kuasa</th>
+                                    <th>Jumlah<br>Bidang</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>Penjadwalan</th>
@@ -86,6 +87,7 @@
                                         <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->no_berkas }}/{{ $d->tahun }}</td>
                                         <td>{{ $d->nm_pemohon }}<br>{{ $d->kuasa }}</td>
+                                        <td>{{ $d->jml_bidang > 0 ? $d->jml_bidang . ' Bidang' : '-' }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>
@@ -232,6 +234,22 @@
                                         <label for="">Nama Pemohon</label>
                                         <input type="text" class="form-control" name="nm_pemohon"
                                             value="{{ $d->nm_pemohon }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Kuasa</label>
+                                        <input type="text" class="form-control" name="kuasa"
+                                            value="{{ $d->kuasa }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Jumlah Bidang</label>
+                                        <input type="number" class="form-control" name="jml_bidang"
+                                            value="{{ $d->jml_bidang }}">
                                     </div>
                                 </div>
 

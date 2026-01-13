@@ -40,6 +40,7 @@
                                     <th>No Sistem</th>
                                     <th>No Berkas</th>
                                     <th>Pemohon/<br>Kuasa</th>
+                                    <th>Jumlah<br>Bidang</th>
                                     <th>Kelurahan</th>
                                     <th>Alamat</th>
                                     <th>Penjadwalan</th>
@@ -60,6 +61,7 @@
                                         <td>{{ $d->no_sistem }}</td>
                                         <td>{{ $d->no_berkas }}/{{ $d->tahun }}</td>
                                         <td>{{ $d->nm_pemohon }}/<br>{{ $d->kuasa }}</td>
+                                        <td>{{ $d->jml_bidang > 0 ? $d->jml_bidang . ' Bidang' : '-' }}</td>
                                         <td>{{ $d->kelurahan }}</td>
                                         <td>{{ $d->alamat }}</td>
                                         <td>
@@ -174,6 +176,20 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Permohonan</label>
+                                        <select name="permohonan_id" class="form-control">
+                                            <option value="">Pilih Permohonan</option>
+                                            @foreach ($permohonan as $pr)
+                                                <option value="{{ $pr->id }}"
+                                                    {{ $d->permohonan_id == $pr->id ? 'selected' : '' }}>
+                                                    {{ $pr->nm_permohonan }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
                                 {{-- <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="">Nomor Berkas</label>
@@ -195,6 +211,22 @@
                                         <label for="">Nama Pemohon</label>
                                         <input type="text" class="form-control" name="nm_pemohon"
                                             value="{{ $d->nm_pemohon }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Kuasa</label>
+                                        <input type="text" class="form-control" name="kuasa"
+                                            value="{{ $d->kuasa }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="">Jumlah Bidang</label>
+                                        <input type="number" class="form-control" name="jml_bidang"
+                                            value="{{ $d->jml_bidang }}">
                                     </div>
                                 </div>
 

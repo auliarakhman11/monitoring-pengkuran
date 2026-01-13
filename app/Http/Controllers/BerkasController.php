@@ -69,6 +69,7 @@ class BerkasController extends Controller
             'no_sistem' => $no_sistem,
             'urutan' => $urutan,
             'kelurahan' => $request->kelurahan,
+            'jml_bidang' => $request->jml_bidang,
             'alamat' => $request->alamat,
             'nm_pemohon' => $request->nm_pemohon,
             'no_tlp' => $request->no_tlp,
@@ -95,6 +96,7 @@ class BerkasController extends Controller
             'no_berkas' => $request->no_berkas,
             'tahun' => $request->tahun,
             'kelurahan' => $request->kelurahan,
+            'jml_bidang' => $request->jml_bidang,
             'alamat' => $request->alamat,
             'nm_pemohon' => $request->nm_pemohon,
             'kuasa' => $request->kuasa,
@@ -113,6 +115,7 @@ class BerkasController extends Controller
             'title' => 'Penjadwalan',
             'berkas' => Berkas::where('proses_id', 1)->where('void', 0)->with(['pengukuran', 'pengukuran.petugas'])->orderBy('berkas.id', 'ASC')->get(),
             'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
+            'permohonan' => Permohonan::all(),
         ]);
     }
 
@@ -277,7 +280,7 @@ class BerkasController extends Controller
 
         return view('berkas.pengecekan', [
             'title' => 'Pengecekan',
-            'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->with(['uploadFile','pengukuran', 'pengukuran.petugas'])->orderBy('berkas.id', 'ASC')->get(),
+            'berkas' => Berkas::where('proses_id', 5)->where('void', 0)->with(['uploadFile', 'pengukuran', 'pengukuran.petugas'])->orderBy('berkas.id', 'ASC')->get(),
             'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
         ]);
     }

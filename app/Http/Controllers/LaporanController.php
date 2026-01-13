@@ -89,7 +89,7 @@ class LaporanController extends Controller
 
                     if (date('D', strtotime($tahun . '-' . $bulan . '-' . $i)) == 'Sun') {
                         $status = 'Minggu';
-                    }elseif(date('D', strtotime($tahun . '-' . $bulan . '-' . $i)) == 'Sat'){
+                    } elseif (date('D', strtotime($tahun . '-' . $bulan . '-' . $i)) == 'Sat') {
                         $status = 'Sabtu';
                     } else {
                         $status = '';
@@ -141,7 +141,15 @@ class LaporanController extends Controller
     {
         return view('laporan.laporan_kendala', [
             'title' => 'Laporan Berkas Kendala',
-            'berkas' => Berkas::where('void', 0)->where('kendala', '!=', NULL)->where('proses_id', '!=', 6)->with(['uploadFile'])->get(),
+            'berkas' => Berkas::where('void', 0)->where('kendala', '!=', NULL)->whereNotIn('proses_id', [6, 4])->with(['uploadFile', 'pengukuran', 'pengukuran.petugas'])->get(),
+        ]);
+    }
+
+    public function laporanSudahDiukur()
+    {
+        return view('laporan.laporanSudahDiukur', [
+            'title' => 'Laporan Berkas Kendala',
+            'berkas' => Berkas::where('void', 0)->where('proses_id', 6)->with(['uploadFile', 'pengukuran', 'pengukuran.petugas'])->get(),
         ]);
     }
 }
