@@ -1,21 +1,46 @@
 @extends('template.master')
 @section('content')
-
-    <script src='{{ asset('fullcalendar') }}/dist/index.global.js'></script>
-
-
-
     <style>
-        body {
-            margin: 40px 10px;
-            padding: 0;
-            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-            font-size: 14px;
+        .tableFixHead {
+            overflow: auto;
+            height: 500px;
         }
 
-        #calendar {
-            max-width: 1100px;
-            margin: 0 auto;
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 11;
+        }
+
+        /* Just common table stuff. Really. */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 8px 16px;
+        }
+
+        th {
+            background: #eee;
+        }
+
+
+        /* Custom CSS for sticky left column */
+        .sticky-left {
+            position: sticky;
+            left: 0;
+            background-color: #f8f9fa;
+            /* Optional: adds a background color for visibility */
+            z-index: 10;
+            /* Ensures the sticky column appears above other table content */
+        }
+
+        /* Optional: Ensure table borders display correctly with sticky columns */
+        .table-bordered .sticky-left {
+            border-right: 1px solid #dee2e6;
         }
     </style>
 
@@ -75,11 +100,11 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive tableFixHead">
                                 <table class="table table-sm table-bordered text-center">
                                     <thead>
                                         <tr>
-                                            <th>Petugas</th>
+                                            <th class="sticky-left">Petugas</th>
                                             @foreach ($dt_periode as $dr)
                                                 <th>{{ $dr }}</th>
                                             @endforeach
@@ -88,7 +113,7 @@
                                     <tbody>
                                         @foreach ($dt_pengukuran as $d)
                                             <tr>
-                                                <td class="text-left">{{ $d['petugas'] }}</td>
+                                                <td class="text-left sticky-left">{{ $d['petugas'] }}</td>
                                                 @foreach ($d['dt_tgl'] as $dt)
                                                     <td>
                                                         @if ($dt['status'] == 'Sibuk')
@@ -98,7 +123,8 @@
                                                                 <span class='badge badge-warning'>Cuti</span>
                                                             @else
                                                                 @if ($dt['status'] == 'Minggu' || $dt['status'] == 'Sabtu')
-                                                                    <span class='badge bg-danger text-light'>{{ $dt['status'] }}</span>
+                                                                    <span
+                                                                        class='badge bg-danger text-light'>{{ $dt['status'] }}</span>
                                                                 @else
                                                                     <p class="text-success" style="font-size: 10px;">
                                                                         TERSEDIA</p>

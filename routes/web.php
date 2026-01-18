@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dropStatusPu/{id}', [LaporanController::class, 'dropStatusPu'])->name('dropStatusPu');
     Route::get('laporanKendala', [LaporanController::class, 'laporanKendala'])->name('laporanKendala');
     Route::get('laporanSudahDiukur', [LaporanController::class, 'laporanSudahDiukur'])->name('laporanSudahDiukur');
+    Route::get('laporanPerproses', [LaporanController::class, 'laporanPerproses'])->name('laporanPerproses');
     //end laporan
 
     //import

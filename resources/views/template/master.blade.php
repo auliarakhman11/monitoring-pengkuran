@@ -35,6 +35,8 @@
         </script>
     @endif
 
+    @yield('chart')
+
 </head>
 
 <body data-theme="light" class="font-nunito right_icon_toggle">

@@ -29,7 +29,7 @@
             <div class="block-header">
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="float-left">Berkas dengan kendala</h2>
+                        <h2 class="float-left">Laporan Berkas Sudah Diukur</h2>
 
                         {{-- <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-dashboard"></i></a>

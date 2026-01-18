@@ -213,6 +213,7 @@ class BerkasController extends Controller
         return view('berkas.sps_berkas', [
             'title' => 'Penjadwalan',
             'berkas' => Berkas::select('berkas.*')->selectRaw("datediff(current_date(), berkas.updated_at) as lama_tgl")->whereIn('proses_id', [1, 2])->where('void', 0)->where('tgl_pengukuran', '!=', NULL)->with(['pengukuran', 'pengukuran.petugas', 'proses'])->orderBy('proses_id', 'DESC')->orderBy('berkas.id', 'ASC')->get(),
+            'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
         ]);
     }
 
@@ -272,6 +273,7 @@ class BerkasController extends Controller
         return view('berkas.selesai_sps_berkas', [
             'title' => 'Penjadwalan',
             'berkas' => $berkas,
+            'petugas' => User::where('role_id', 3)->where('aktif', 1)->get(),
         ]);
     }
 

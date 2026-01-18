@@ -152,4 +152,22 @@ class LaporanController extends Controller
             'berkas' => Berkas::where('void', 0)->where('proses_id', 6)->with(['uploadFile', 'pengukuran', 'pengukuran.petugas'])->get(),
         ]);
     }
+
+    public function laporanPerproses()
+    {
+        $berkas = Berkas::where('void', 0)->where('proses_id', '!=', 4)->get();
+
+        $berkas_masuk = $berkas->count();
+        $menunggu_penjadwalan = $berkas->where('tgl_pengukuran', NULL)->count();
+        $sudah_penjadwalan = $berkas->where('tgl_pengukuran', '!=', NULL)->where('proses_id', '!=', 6)->count();
+        $sudah_dikur = $berkas->where('proses_id', 6)->count();
+
+        return view('laporan.laporanPerproses', [
+            'title' => 'Laporan Berkas Kendala',
+            'berkas_masuk' => $berkas_masuk,
+            'menunggu_penjadwalan' => $menunggu_penjadwalan,
+            'sudah_penjadwalan' => $sudah_penjadwalan,
+            'sudah_dikur' => $sudah_dikur,
+        ]);
+    }
 }
